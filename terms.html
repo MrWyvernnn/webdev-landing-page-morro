@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Terms of Service — Morro</title>
+    <meta name="description" content="Terms of Service and Limitation of Liability for Morro, the offline-first execution alarm.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://YOUR-CLOUDFLARE-URL.pages.dev/terms.html">
+    <meta property="og:title" content="Terms of Service — Morro">
+    <meta property="og:description" content="Morro is an execution tool provided AS-IS. Review our terms and limitation of liability.">
+<!-- 🛑 UPLOAD REQUIRED: You MUST add a 1200x630 og-image.png file to your root folder, or Reddit will show a broken image icon! -->
+    <meta property="og:image" content="https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png">
+
+    <style>
+        :root {
+            --canvas: #000000;
+            --surface: #0a0a0f;
+            --surface-card: rgba(255, 255, 255, 0.025);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --accent: #FFD54F;
+            --accent-glow: rgba(255, 213, 79, 0.16);
+            --text-pure: #FFFFFF;
+            --text-muted: #A1A1AA;
+            --text-sub: #787880;
+            --font-main: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Roboto Mono', Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--canvas);
+            color: var(--text-pure);
+            font-family: var(--font-main);
+            line-height: 1.65;
+            padding: 48px 24px 96px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 36px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 213, 79, 0.08);
+            border: 1px solid rgba(255, 213, 79, 0.18);
+            transition: all 0.2s ease;
+        }
+
+        .back-nav:hover {
+            background: rgba(255, 213, 79, 0.16);
+            transform: translateX(-2px);
+        }
+
+        .tag-pill {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        h1 {
+            font-size: clamp(34px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .effective-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+        }
+
+        .warning-box {
+            background: rgba(255, 213, 79, 0.04);
+            border: 1px solid rgba(255, 213, 79, 0.28);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 48px;
+        }
+
+        .warning-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .warning-box p {
+            color: var(--text-pure);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-pure);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 span.num {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        p, ul {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-pure);
+            font-weight: 600;
+        }
+
+        .code-inline {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-pure);
+            font-size: 13px;
+        }
+
+        .card-callout {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 18px 0;
+        }
+
+        .legal-shout {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        footer {
+            margin-top: 64px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-sub);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-nav">&larr; Return to Morro</a>
+
+        <div class="tag-pill">Legal Terms &amp; Conditions</div>
+        <h1>Terms of Service</h1>
+        <div class="effective-date">SOURCE OF TRUTH // EFFECTIVE: NOVEMBER 6, 2026</div>
+
+        <div class="warning-box">
+            <div class="warning-title">Important Notice Before Use</div>
+            <p>Morro is an implementation-intentions commitment tool designed for your waking routine. It is provided strictly &ldquo;AS IS.&rdquo; By installing, configuring, or arming alarms via Morro, you acknowledge that Android hardware environments, operating system task killers, and OEM power-saving algorithms are beyond our physical control.</p>
+        </div>
+
+        <section>
+            <h2><span class="num">01.</span> Nature of the Tool &amp; No Magic Guarantee</h2>
+            <p>Morro is a commitment device for the first task of your day. It pairs audio promises with physical and cognitive wake-up gates to increase morning accountability. Morro is <strong>not</strong> a medical device, nor a psychological cure for procrastination or clinical sleep disorders.</p>
+            <p>You remain solely responsible for your sleep hygiene, lifestyle decisions, and morning schedule.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">02.</span> CRITICAL CLAUSE: Limitation of Liability for Real-World Consequences</h2>
+            <div class="card-callout">
+                <p class="legal-shout"><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:</strong></p>
+                <p>IN NO EVENT SHALL MORRO, ITS DEVELOPERS, FOUNDERS, OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, OR PUNITIVE DAMAGES ARISING FROM OR RELATING TO THE FAILURE OF AN ALARM TO RING, ACTIVATE, OR SOUND AS SCHEDULED.</p>
+                <p>THIS INCLUDES, WITHOUT LIMITATION: <strong>MISSED FLIGHTS, TRAIN DEPARTURES, OR TRANSIT COMMUTES; MISSED JOB INTERVIEWS, DISMISSALS, OR PROFESSIONAL PENALTIES; FAILED ACADEMIC EXAMINATIONS; MISSED MEDICAL APPOINTMENTS; BUSINESS DISRUPTIONS; OR ANY PHYSICAL, MENTAL, OR FINANCIAL LOSSES WHATSOEVER.</strong></p>
+            </div>
+            <p>Modern Android operating systems contain vendor-specific power management software (frequently implemented by OEMs including Samsung, Xiaomi, OnePlus, Oppo, Huawei, and others). These vendor systems may aggressively terminate background services, purge alarms from hardware registers, or stall foreground notifications during deep Doze states without developer consent.</p>
+            <p>While Morro implements maximum production defenses (<span class="code-inline">AlarmManager.setAlarmClock()</span>, lock screen takeover flags, and reboot reschedule receivers), we cannot override hardware battery exhaustion, OEM firmware kills, silent volume overrides, or corrupted hardware states.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">03.</span> User Operational Responsibilities</h2>
+            <p>By arming alarms through Morro, you explicitly accept the obligation to:</p>
+            <ul>
+                <li><strong>Disable Aggressive OEM Battery Optimization:</strong> Grant Morro unrestricted battery execution permissions in your Android system settings so background timers are not paused by the OS.</li>
+                <li><strong>Verify Hardware Alarm Volume:</strong> Ensure your device's physical <span class="code-inline">STREAM_ALARM</span> volume is set to an audible level. Morro flags zero-volume conditions with visual warnings but will never automatically alter your device volume settings without your explicit control.</li>
+                <li><strong>Maintain Device Power:</strong> Keep your device connected to a power source or sufficiently charged overnight. Morro cannot fire on a dead battery.</li>
+                <li><strong>Mission Verification:</strong> Keep your chosen mission target (e.g., physical QR code or barcode) reachable and intact.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2><span class="num">04.</span> Subscription, Billing &amp; Access Handshake</h2>
+            <p>Morro requires an active, paid subscription and account login to unlock full alarm scheduling and mission capabilities. Subscriptions are billed through Google Play Billing in accordance with Google Play's standard terms, renewal cadences, and cancellation windows.</p>
+            <p>If your subscription expires or is cancelled, previously scheduled alarms may be disarmed upon entitlement token expiration. You may cancel your subscription at any time via the Google Play Store subscription management dashboard.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">05.</span> Local Storage Sandbox &amp; Audio Ownership</h2>
+            <p>All voice memos, audio recordings, and commitment routines created within Morro remain your exclusive property. You grant Morro no license to your recordings beyond the local operational playback required to sound the alarm on your hardware device. Recordings remain strictly within your device's <span class="code-inline">context.filesDir</span> sandbox.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">06.</span> Intellectual Property &amp; Restrictions</h2>
+            <p>The Morro software, visual styling, design system, trademarks, animations, and proprietary mission verification algorithms are the intellectual property of Project Morro. You agree not to decompile, reverse-engineer, extract, copy, or redistribute the binary assets or brand trademarks without express written authorization.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">07.</span> Disclaimer of Warranties (&ldquo;AS IS&rdquo;)</h2>
+            <p class="legal-shout">MORRO IS PROVIDED ON AN &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, RELIABILITY, OR NON-INFRINGEMENT. YOUR USE OF MORRO IS AT YOUR OWN SOLE RISK.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">08.</span> Changes to These Terms</h2>
+            <p>We reserve the right to modify these Terms as our software architecture evolves. Continued use of Morro following any posted revisions constitutes your acceptance of the amended terms.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">09.</span> Contact</h2>
+            <p>For inquiries regarding these Terms or legal matters, contact the engineering team at <span class="code-inline">marhaanansari@gmail.com</span>.</p>
+        </section>
+
+        <footer>
+            <div>&copy; 2026 MORRO. NO SNOOZE GUARANTEE.</div>
+            <div>
+                <a href="privacy.html">Privacy Policy</a> &bull;
+                <a href="index.html">Main Deck</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

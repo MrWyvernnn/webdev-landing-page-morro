@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Privacy Policy — Morro</title>
+    <meta name="description" content="Morro is an offline-first commitment alarm. We do not harvest, monetize, or transmit your voice recordings or alarm data.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://YOUR-CLOUDFLARE-URL.pages.dev/privacy.html">
+    <meta property="og:title" content="Privacy Policy — Morro">
+    <meta property="og:description" content="Zero cloud storage for your mornings. Offline-first data sovereignty.">
+<!-- 🛑 UPLOAD REQUIRED: You MUST add a 1200x630 og-image.png file to your root folder, or Reddit will show a broken image icon! -->
+    <meta property="og:image" content="https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png">
+
+    <style>
+        :root {
+            --canvas: #000000;
+            --surface: #0a0a0f;
+            --surface-card: rgba(255, 255, 255, 0.025);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --accent: #FFD54F;
+            --accent-glow: rgba(255, 213, 79, 0.16);
+            --text-pure: #FFFFFF;
+            --text-muted: #A1A1AA;
+            --text-sub: #787880;
+            --font-main: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Roboto Mono', Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--canvas);
+            color: var(--text-pure);
+            font-family: var(--font-main);
+            line-height: 1.65;
+            padding: 48px 24px 96px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 36px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 213, 79, 0.08);
+            border: 1px solid rgba(255, 213, 79, 0.18);
+            transition: all 0.2s ease;
+        }
+
+        .back-nav:hover {
+            background: rgba(255, 213, 79, 0.16);
+            transform: translateX(-2px);
+        }
+
+        .tag-pill {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        h1 {
+            font-size: clamp(34px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .effective-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+        }
+
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-pure);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 span.num {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        p, ul {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-pure);
+            font-weight: 600;
+        }
+
+        .code-inline {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-pure);
+            font-size: 13px;
+        }
+
+        .card-callout {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 18px 0;
+        }
+
+        footer {
+            margin-top: 64px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-sub);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-nav">&larr; Return to Morro</a>
+
+        <div class="tag-pill">Legal &amp; Data Sovereignty</div>
+        <h1>Privacy Policy</h1>
+        <div class="effective-date">SOURCE OF TRUTH // EFFECTIVE: NOVEMBER 6, 2026</div>
+
+
+        <section>
+            <h2><span class="num">01.</span> Core Architecture: Local-First Shield</h2>
+            <p>Most modern productivity and alarm applications monetize user behavior by uploading sleep cycles, voice recordings, and activity timestamps to remote cloud infrastructures. Morro rejects this business model entirely.</p>
+            <p>All core alarm execution mechanics, routine schedules, and operational parameters execute locally within the operating system sandbox of your Android device. Your smartphone is the sovereign host; we maintain no remote database containing your morning habits or personal recordings.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">02.</span> Audio Capture &amp; the RECORD_AUDIO Permission</h2>
+            <p>To power the Voice Commitment feature, Morro requests runtime access to your microphone (<span class="code-inline">android.permission.RECORD_AUDIO</span>).</p>
+            <div class="card-callout">
+                <p><strong>Strict Storage Mandate:</strong> Audio recordings are captured in 16000Hz mono AAC format and written directly into your private, isolated application storage sandbox (<span class="code-inline">context.filesDir</span>).</p>
+                <p>Voice recordings are <strong>never</strong> transmitted to cloud servers, never parsed through third-party speech-to-text APIs, and never made accessible to other applications installed on your operating system.</p>
+            </div>
+            <p>When you record tomorrow's commitment or preview past commitments, playback occurs exclusively via native local Android media streams (<span class="code-inline">STREAM_ALARM</span>). If you delete an alarm or uninstall Morro, your audio commitments are permanently purged from your device's filesystem registers.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">03.</span> The Isolated Subscription &amp; Login Exception</h2>
+            <p>Morro is funded directly by its users via subscriptions rather than surveillance advertising or corporate data brokerage. Consequently, network connectivity is activated for only one isolated operation:</p>
+            <ul>
+                <li><strong>Entitlement &amp; Authentication:</strong> Communicating with Google Play Billing and our authentication gateway to verify your active subscription status and confirm valid licensing credentials.</li>
+            </ul>
+            <p>No operational alarm data, audio memos, or personal task descriptions are appended to this validation handshake. If network connectivity is unavailable (e.g., Airplane Mode, dead cellular towers, or off-grid travel), cached license tokens ensure your scheduled alarms continue to execute reliably without delay.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">04.</span> Website Cookies &amp; Web Analytics Policy</h2>
+            <p>Our public website (<span class="code-inline">YOUR-CLOUDFLARE-URL.pages.dev</span>) is designed with the same privacy discipline as the native application:</p>
+            <ul>
+                <li><strong>Zero Cross-Site Tracking:</strong> We do not load Facebook Pixels, Google Tag Manager cross-site advertising scripts, or invasive fingerprinting beacons.</li>
+                <li><strong>No Persistent Advertising Cookies:</strong> We do not deploy cookies to build profiling dossiers or track your browsing activity across other properties.</li>
+                <li><strong>Volatile Context Only:</strong> The landing page extracts transient URL referral parameters (such as <span class="code-inline">?ref=</span>) in temporary memory strictly to attribute beta waitlist reservations accurately.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2><span class="num">05.</span> Waitlist &amp; Beta Communications</h2>
+            <p>When you choose to submit your email address on our beta waitlist form, your email is processed securely via Web3Forms over TLS encryption strictly to deliver closed-beta download links and essential launch updates. You may opt out or request complete deletion of your waitlist record at any time by contacting our founder address at marhaanansari@gmail.com.</p>
+        </section>
+
+        <section>
+            <h2><span class="num">06.</span> Data Erasure &amp; User Control</h2>
+            <p>Because Morro maintains no remote profile of your voice or daily routine, you possess total, instantaneous control over your data. Clearing app storage in Android Settings or uninstalling Morro permanently destroys all voice commitments, logs, and local configuration files.</p>
+        </section>
+
+
+        <footer>
+            <div>&copy; 2026 MORRO. NO SNOOZE GUARANTEE.</div>
+            <div>
+                <a href="terms.html">Terms of Service</a> &bull;
+                <a href="index.html">Main Deck</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

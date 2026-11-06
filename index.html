@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Morro — An Alarm That Refuses to Let You Fail</title>
+    <meta name="description" content="An alarm that won't shut off until you hear yourself promise what you're doing today. A commitment device for your first task. Coming soon.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://YOUR-CLOUDFLARE-URL.pages.dev/">
+    <meta property="og:title" content="Morro — An Alarm That Refuses to Let You Fail">
+    <meta property="og:description" content="An alarm that won't shut off until you hear yourself promise what you're doing today. A commitment device for your first task. Coming soon.">
+<!-- 🛑 UPLOAD REQUIRED: You MUST add a 1200x630 og-image.png file to your root folder, or Reddit will show a broken image icon! -->
+    <meta property="og:image" content="https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://YOUR-CLOUDFLARE-URL.pages.dev/">
+    <meta name="twitter:title" content="Morro — An Alarm That Refuses to Let You Fail">
+    <meta name="twitter:description" content="An alarm that won't shut off until you hear yourself promise what you're doing today. A commitment device for your first task. Coming soon.">
+<!-- 🛑 UPLOAD REQUIRED: You MUST add a 1200x630 og-image.png file to your root folder, or Reddit will show a broken image icon! -->
+    <meta name="twitter:image" content="https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png">
+
+    <style>
+        /* ==========================================================================
+           DESIGN TOKENS & FLUID RESET (Cult / Refero / UI Watermelon Inspired)
+           ========================================================================== */
+        :root {
+            --canvas: #000000;
+            --accent: #FFD54F;
+            --accent-glow: rgba(255, 213, 79, 0.16);
+            --text-pure: #FFFFFF;
+            --text-muted: #999999;
+            --text-sub: #888890; /* WCAG 2.2 AA Compliant (4.7:1 contrast ratio against AMOLED black) */
+            --surface-subtle: rgba(255, 255, 255, 0.02);
+            --font-main: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Nunito', system-ui, sans-serif;
+            --font-mono: 'Space Mono', 'SF Mono', 'Roboto Mono', Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            background-color: var(--canvas);
+            color: var(--text-pure);
+            font-family: var(--font-main);
+            overflow: hidden;
+            width: 100%;
+            height: 100dvh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+        }
+
+        input, textarea, [contenteditable="true"] {
+            user-select: text;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        button, input, [role="button"] {
+            touch-action: manipulation;
+        }
+
+        /* Interactive Cursor Honey Glow (Disabled on touch devices for battery & GPU conservation) */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(255, 213, 79, 0.04) 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease;
+            filter: blur(50px);
+            opacity: 0.7;
+            will-change: transform;
+        }
+
+        @media (hover: none) {
+            .cursor-glow {
+                display: none !important;
+            }
+        }
+
+        /* 100dvh Vertical Scroll Snap Storytelling Deck */
+        .story-deck {
+            height: 100dvh;
+            width: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            position: relative;
+            z-index: 2;
+            scroll-padding-top: env(safe-area-inset-top, 0px);
+            scroll-padding-bottom: env(safe-area-inset-bottom, 0px);
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
+        }
+
+        .slide {
+            height: 100dvh;
+            min-height: 100dvh;
+            width: 100%;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 24px calc(32px + env(safe-area-inset-bottom, 0px)) 24px;
+            position: relative;
+            text-align: center;
+        }
+
+        .slide-inner {
+            width: 100%;
+            max-width: 640px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Bulletproof Reveal & Spring-Popping Animations */
+        .reveal, .popping {
+            opacity: 0;
+            transform: translateY(24px) scale(0.96);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+            will-change: transform, opacity;
+        }
+
+        .slide.active .reveal,
+        .slide.active .popping {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .slide.active .reveal:nth-child(1), .slide.active .popping:nth-child(1) { transition-delay: 0.05s; }
+        .slide.active .reveal:nth-child(2), .slide.active .popping:nth-child(2) { transition-delay: 0.12s; }
+        .slide.active .reveal:nth-child(3), .slide.active .popping:nth-child(3) { transition-delay: 0.20s; }
+        .slide.active .reveal:nth-child(4), .slide.active .popping:nth-child(4) { transition-delay: 0.28s; }
+        .slide.active .reveal:nth-child(5), .slide.active .popping:nth-child(5) { transition-delay: 0.36s; }
+        .slide.active .reveal:nth-child(6), .slide.active .popping:nth-child(6) { transition-delay: 0.44s; }
+        .slide.active .reveal:nth-child(7), .slide.active .popping:nth-child(7) { transition-delay: 0.52s; }
+
+        /* Hero headline: smooth drop-in from above on initial load & scroll-exit */
+        .hero-headline {
+            opacity: 0;
+            transform: translateY(-24px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .hero-headline.hero-show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-headline.hero-exit {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Ambient Honey Particle Background (vanilla Canvas, zero dependencies) */
+        #ambientBg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            display: block;
+        }
+
+        /* Pill Tag */
+        .tag-pill {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            background: rgba(255, 213, 79, 0.08);
+            padding: 6px 16px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-pill::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        /* Headline & Typography */
+        h1, h2 {
+            font-size: clamp(34px, 7vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            color: var(--text-pure);
+        }
+
+        .body-lead {
+            font-size: clamp(16px, 3.2vw, 20px);
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 520px;
+            font-weight: 400;
+            letter-spacing: -0.015em;
+        }
+
+        /* Fluid Voice Waveform Graphic (Slide 3) */
+        .waveform-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 64px;
+            margin: 12px 0;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--accent);
+            border-radius: 999px;
+            transform-origin: center;
+            animation: wave 1.4s ease-in-out infinite alternate;
+        }
+
+        .wave-bar:nth-child(1) { height: 16px; animation-delay: 0.1s; }
+        .wave-bar:nth-child(2) { height: 36px; animation-delay: 0.3s; }
+        .wave-bar:nth-child(3) { height: 54px; animation-delay: 0.15s; }
+        .wave-bar:nth-child(4) { height: 28px; animation-delay: 0.4s; }
+        .wave-bar:nth-child(5) { height: 60px; animation-delay: 0.25s; }
+        .wave-bar:nth-child(6) { height: 42px; animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { height: 20px; animation-delay: 0.35s; }
+
+        @keyframes wave {
+            0% { transform: scaleY(0.4); opacity: 0.5; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Minimal Fluid Card (Border-Free, Pure Contrast) */
+        .fluid-card {
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: 28px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+            position: relative;
+        }
+
+        .fluid-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+
+        .fluid-stat-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Fine Print Disclosure (Brand-Style Tucked-Away Details) */
+        .fine-print {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            text-align: left;
+            max-width: 540px;
+            letter-spacing: -0.01em;
+            opacity: 0.95;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 10px;
+        }
+
+        /* Seamless Email Capture (Slide 5) */
+        .capture-card {
+            width: 100%;
+            max-width: 480px;
+            margin-top: 4px;
+        }
+
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .email-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: none;
+            border-radius: 16px;
+            padding: 18px 20px;
+            font-size: 16px;
+            color: var(--text-pure);
+            font-family: inherit;
+            outline: none;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .email-input:focus {
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .email-input::placeholder {
+            color: var(--text-sub);
+        }
+
+        .honey-btn {
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .honey-btn {
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 28px;
+            font-family: var(--font-main);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1),
+                        box-shadow 0.18s ease,
+                        background 0.18s ease;
+        }
+
+        .honey-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255, 213, 79, 0.35);
+            background: #ffe082;
+        }
+
+        .honey-btn:active {
+            transform: translateY(0);
+        }
+
+        .honey-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: left;
+            min-height: 44px;
+            padding: 4px 0;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Form Feedback */
+        .toast-msg {
+            font-size: 14px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .toast-msg.success {
+            display: block;
+            background: rgba(74, 222, 128, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .toast-msg.error {
+            display: block;
+            background: rgba(248, 113, 113, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+
+        /* Interactive Scroll Pulse Arrow */
+        .scroll-indicator {
+            position: absolute;
+            bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-sub);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            animation: pulse-arrow 2.2s infinite;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .scroll-indicator:hover {
+            color: var(--accent);
+            transform: translateY(3px);
+        }
+
+        .scroll-indicator svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: var(--text-sub);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.2s ease;
+        }
+
+        .scroll-indicator:hover svg {
+            stroke: var(--accent);
+            transition: stroke 0.15s ease;
+        }
+
+        @keyframes pulse-arrow {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(6px); opacity: 0.9; }
+        }
+
+        /* ==========================================================================
+           FRICTION CONCEPT ANIMATION (SLIDE 4) - HYPERFRAMES MOTION
+           ========================================================================== */
+        .breach-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .breach-outer-ring, .breach-middle-ring, .breach-inner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            opacity: 0.35;
+            animation: breachPulse 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+        }
+
+        .breach-outer-ring {
+            width: 200px;
+            height: 200px;
+            animation-delay: 0.2s;
+        }
+
+        .breach-middle-ring {
+            width: 145px;
+            height: 145px;
+            animation-delay: 0.4s;
+        }
+
+        .breach-inner-ring {
+            width: 90px;
+            height: 90px;
+            animation-delay: 0.6s;
+        }
+
+        .breach-core {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            background: rgba(255, 213, 79, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 24px rgba(255, 213, 79, 0.25);
+        }
+
+        .breach-icon-ring {
+            width: 54px;
+            height: 54px;
+            color: var(--accent);
+            animation: breachRotate 6s linear infinite;
+        }
+
+        .breach-clock {
+            width: 100%;
+            height: 100%;
+        }
+
+        .breach-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 213, 79, 0.35) 0%, transparent 70%);
+            animation: breachPulseCore 2.5s ease-in-out infinite;
+        }
+
+        .breach-particle {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: breachParticle 3s ease-in-out infinite;
+        }
+
+        .p1 { top: 18%; left: 18%; animation-delay: 0.1s; }
+        .p2 { top: 18%; right: 18%; animation-delay: 0.3s; }
+        .p3 { bottom: 18%; left: 18%; animation-delay: 0.5s; }
+        .p4 { bottom: 18%; right: 18%; animation-delay: 0.7s; }
+        .p5 { top: 50%; left: 4%; animation-delay: 0.9s; }
+        .p6 { top: 50%; right: 4%; animation-delay: 1.1s; }
+
+        @keyframes breachPulse {
+            0% { transform: scale(0.92); opacity: 0.2; }
+            100% { transform: scale(1.08); opacity: 0.5; }
+        }
+
+        @keyframes breachRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes breachPulseCore {
+            0% { transform: scale(0.95); opacity: 0.25; }
+            50% { transform: scale(1.15); opacity: 0.65; }
+            100% { transform: scale(0.95); opacity: 0.25; }
+        }
+
+        @keyframes breachParticle {
+            0% { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
+            50% { opacity: 1; }
+            100% { transform: translate(0, -26px) scale(1.1); opacity: 0; }
+        }
+
+        /* Cost Impact Card */
+        .cost-impact-card {
+            background: rgba(255, 213, 79, 0.035);
+            border: 1px solid rgba(255, 213, 79, 0.15);
+            border-radius: 20px;
+            padding: 16px 20px;
+            width: 100%;
+            max-width: 520px;
+            margin: 4px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .cost-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cost-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            background: rgba(255, 213, 79, 0.12);
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .cost-stat {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+
+        .cost-body {
+            font-size: 14px;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        .cost-body strong {
+            color: var(--text-pure);
+            font-weight: 600;
+        }
+
+        .cost-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cost-sep {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Compact Viewport Handling */
+        @media (max-height: 720px) {
+            .breach-container {
+                width: 180px;
+                height: 180px;
+                margin: 14px auto;
+            }
+            .cost-impact-card {
+                padding: 14px;
+                border-radius: 16px;
+            }
+            .cost-stat {
+                font-size: 20px;
+            }
+        }
+
+        /* ==========================================================================
+           FRICTION GATE SIMULATOR (SLIDE 5) - HYPERFRAMES MOTION
+           ========================================================================== */
+        .simulator-card {
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: 24px;
+            padding: 20px;
+            width: 100%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .gate-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .gate-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 10px 4px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.03em;
+            text-align: center;
+        }
+
+        .gate-btn:hover {
+            color: var(--text-pure);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .gate-btn.active {
+            background: var(--accent);
+            color: #000000;
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(255, 213, 79, 0.28);
+        }
+
+        .simulator-stage {
+            background: #08080d;
+            border-radius: 18px;
+            padding: 22px 18px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 213, 79, 0.12);
+        }
+
+        .gate-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            gap: 12px;
+            opacity: 0;
+            transform: scale(0.96);
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+        }
+
+        .gate-view.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 1. QR Radar Scanner View */
+        .qr-scanner-box {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 2px dashed rgba(255, 213, 79, 0.35);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 213, 79, 0.02);
+            overflow: hidden;
+        }
+
+        .qr-corners {
+            position: absolute;
+            inset: 6px;
+            pointer-events: none;
+        }
+
+        .qr-corners::before, .qr-corners::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--accent);
+            border-style: solid;
+        }
+
+        .qr-corners::before {
+            top: 0; left: 0;
+            border-width: 2px 0 0 2px;
+            border-radius: 4px 0 0 0;
+        }
+
+        .qr-corners::after {
+            bottom: 0; right: 0;
+            border-width: 0 2px 2px 0;
+            border-radius: 0 0 4px 0;
+        }
+
+        .qr-laser {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent), 0 0 4px #ffffff;
+            animation: qrScan 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes qrScan {
+            0% { top: 8%; opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { top: 92%; opacity: 0.3; }
+        }
+
+        /* 2. Object Hunt View */
+        .hunt-viewfinder {
+            position: relative;
+            width: 130px;
+            height: 90px;
+            border: 1px solid rgba(255, 213, 79, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(255, 213, 79, 0.08) 0%, transparent 70%);
+        }
+
+        .hunt-target {
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: huntPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+        }
+
+        @keyframes huntPulse {
+            0% { transform: scale(0.92); opacity: 0.8; }
+            100% { transform: scale(1.06); opacity: 1; }
+        }
+
+        /* 3. Rapid Math View */
+        .math-equation-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-pure);
+        }
+
+        .math-badge {
+            background: rgba(255, 213, 79, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(255, 213, 79, 0.3);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 16px;
+            letter-spacing: 0.05em;
+            animation: mathGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes mathGlow {
+            0% { box-shadow: 0 0 0 rgba(255, 213, 79, 0); }
+            100% { box-shadow: 0 0 16px rgba(255, 213, 79, 0.3); }
+        }
+
+        /* 4. Affirmation Voice View */
+        .affirmation-visual {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 38px;
+        }
+
+        .affirmation-bar {
+            width: 4px;
+            background: var(--accent);
+            border-radius: 999px;
+            animation: affirmWave 1.2s ease-in-out infinite alternate;
+        }
+
+        .affirmation-bar:nth-child(1) { height: 12px; animation-delay: 0.05s; }
+        .affirmation-bar:nth-child(2) { height: 26px; animation-delay: 0.25s; }
+        .affirmation-bar:nth-child(3) { height: 36px; animation-delay: 0.15s; }
+        .affirmation-bar:nth-child(4) { height: 18px; animation-delay: 0.35s; }
+        .affirmation-bar:nth-child(5) { height: 32px; animation-delay: 0.1s; }
+        .affirmation-bar:nth-child(6) { height: 22px; animation-delay: 0.4s; }
+        .affirmation-bar:nth-child(7) { height: 14px; animation-delay: 0.2s; }
+
+        @keyframes affirmWave {
+            0% { transform: scaleY(0.35); opacity: 0.45; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Simulator Status Line */
+        .sim-status {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sim-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .sim-subtext {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 420px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        /* Cost Effectiveness Strip */
+        .cost-strip {
+            background: rgba(255, 213, 79, 0.04);
+            border: 1px solid rgba(255, 213, 79, 0.14);
+            border-radius: 16px;
+            padding: 12px 18px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 12px;
+        }
+
+        .cost-strip-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            background: rgba(255, 213, 79, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .cost-strip-desc {
+            color: var(--text-muted);
+            text-align: right;
+            line-height: 1.3;
+        }
+
+        .cost-strip-desc strong {
+            color: var(--text-pure);
+        }
+
+        /* Accessibility: Respect Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            .reveal, .hero-headline, .popping, .gate-view {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .story-deck {
+                scroll-behavior: auto;
+            }
+            .cursor-glow, #ambientBg, .qr-laser, .privacy-modal-overlay {
+                display: none !important;
+            }
+            .hunt-target, .math-badge, .affirmation-bar, .breach-outer-ring, .breach-middle-ring, .breach-inner-ring, .breach-pulse, .breach-particle, .breach-icon-ring {
+                animation: none !important;
+            }
+        }
+
+        /* Compact Viewport Handling */
+        @media (max-height: 720px) {
+            .slide {
+                padding: 20px 16px;
+            }
+            .slide-inner {
+                gap: 14px;
+            }
+            h1, h2 {
+                font-size: clamp(28px, 5.5vw, 40px);
+            }
+            .body-lead {
+                font-size: 15px;
+                line-height: 1.4;
+            }
+            .fluid-card, .simulator-card {
+                padding: 16px 18px;
+                gap: 10px;
+                border-radius: 20px;
+            }
+            .gate-btn {
+                padding: 7px 2px;
+                font-size: 10px;
+            }
+            .simulator-stage {
+                min-height: 140px;
+                padding: 14px;
+            }
+            .qr-scanner-box {
+                width: 75px;
+                height: 75px;
+            }
+            .hunt-viewfinder {
+                width: 110px;
+                height: 75px;
+            }
+            .cost-strip {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+            .fluid-stat-row {
+                padding: 6px 0;
+                font-size: 13px;
+            }
+            .waveform-container {
+                height: 44px;
+                margin: 6px 0;
+            }
+            .scroll-indicator {
+                display: none;
+            }
+        }
+
+        /* ==========================================================================
+           AMOLED BLACK & SOFT HONEY PRIVACY ACCEPTANCE MODAL
+           ========================================================================== */
+        .code-inline {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        .privacy-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .privacy-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .privacy-modal-card {
+            background: #0D0D14;
+            border: 1px solid rgba(255, 213, 79, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 0 32px rgba(255, 213, 79, 0.12), 0 24px 60px rgba(0, 0, 0, 0.85);
+            width: 100%;
+            max-width: 520px;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+            text-align: left;
+            transform: scale(0.94) translateY(18px);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90dvh;
+            overflow-y: auto;
+        }
+
+        .privacy-modal-overlay.active .privacy-modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .privacy-modal-title {
+            font-size: clamp(20px, 4vw, 24px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text-pure);
+            line-height: 1.25;
+            margin: 0;
+        }
+
+        .privacy-modal-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            letter-spacing: -0.01em;
+        }
+
+        .privacy-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            transition: opacity 0.2s ease, text-underline-offset 0.2s ease;
+        }
+
+        .privacy-modal-link:hover {
+            opacity: 0.85;
+            text-underline-offset: 6px;
+        }
+
+        .privacy-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        @media (min-width: 480px) {
+            .privacy-modal-actions {
+                flex-direction: row-reverse;
+                gap: 12px;
+            }
+        }
+
+        .privacy-accept-btn {
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 22px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .privacy-accept-btn:hover {
+            background: #ffe082;
+            box-shadow: 0 8px 24px rgba(255, 213, 79, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .privacy-accept-btn:active {
+            transform: translateY(0);
+        }
+
+        .privacy-decline-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .privacy-decline-btn:hover {
+            color: var(--text-pure);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ==========================================================================
+           PRIVACY MODAL REDESIGN — Human, Warm, Authoritative
+           ========================================================================== */
+
+        /* @font-face: Cormorant Garamond + Space Mono (OFL, <40KB total) */
+        @font-face {
+            font-family: 'Cormorant Garamond';
+            src: url('https://fonts.gstatic.com/s/cormorantgaramond/v13/co3DmWZ8kjZuHSAu5kYnQYgx0rbMWg.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Space Mono';
+            src: url('https://fonts.gstatic.com/s/spacemono/v14/i7dPIFZifjKcF5UAWdDRYEF.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* Two-tone paper-creased card with letterpress shadow */
+        .privacy-modal-overlay {
+            background: linear-gradient(135deg, #0A0A0F 0%, #0D0D14 100%);
+        }
+
+        .privacy-modal-card {
+            background: #0D0D14;
+            border: 1px solid rgba(255, 213, 79, 0.25);
+            border-top: 3px solid rgba(255, 213, 79, 0.4);
+            border-radius: 16px;
+            box-shadow:
+                0 0 32px rgba(255, 213, 79, 0.12),
+                0 2px 0 rgba(255, 213, 79, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                0 24px 60px rgba(0, 0, 0, 0.85);
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            text-align: left;
+            max-height: 90dvh;
+            overflow-y: auto;
+            transform: scale(0.94) translateY(18px);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .privacy-modal-overlay.active .privacy-modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* Privacy Promise micro-card above actions */
+        .privacy-promise-card {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            background: rgba(255, 213, 79, 0.08);
+            padding: 10px 16px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            align-self: stretch;
+            letter-spacing: -0.01em;
+            line-height: 1.5;
+        }
+
+        /* Founder voice: italic serif, oblique edges */
+        .privacy-modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(19px, 3.8vw, 23px);
+            font-weight: 700;
+            font-style: italic;
+            letter-spacing: -0.02em;
+            color: var(--text-pure);
+            line-height: 1.28;
+            margin: 0;
+        }
+
+        .privacy-modal-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text-muted);
+            letter-spacing: -0.01em;
+        }
+
+        .privacy-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 4px 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .privacy-modal-link:hover {
+            opacity: 0.8;
+            transform: translateX(3px);
+        }
+
+        /* Side-by-side row (desktop) / stacked (mobile) */
+        .privacy-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        @media (min-width: 480px) {
+            .privacy-modal-actions {
+                flex-direction: row;
+                gap: 12px;
+            }
+        }
+
+        /* Solid primary: honey with micro tick SVG */
+        .privacy-accept-btn {
+            background: var(--accent);
+            color: #000000;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            text-transform: uppercase;
+            min-height: 48px;
+        }
+
+        .privacy-accept-btn:hover {
+            background: #ffe082;
+            box-shadow: 0 8px 28px rgba(255, 213, 79, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .privacy-accept-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(255, 213, 79, 0.2);
+        }
+
+        /* Ghost secondary: "two humans disagreeing gently" */
+        .privacy-decline-btn {
+            background: transparent;
+            color: var(--text-sub);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            letter-spacing: -0.01em;
+        }
+
+        .privacy-decline-btn:hover {
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Focus-visible: full ring for keyboard nav */
+        .privacy-accept-btn:focus-visible,
+        .privacy-decline-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 4px rgba(255, 213, 79, 0.2);
+        }
+
+        /* Compact viewport: tighter spacing, stacked buttons preserved */
+        @media (max-height: 720px) {
+            .privacy-modal-card {
+                padding: 22px 18px;
+                gap: 14px;
+                border-top-width: 2px;
+            }
+
+            .privacy-modal-title {
+                font-size: clamp(17px, 3.5vw, 20px);
+            }
+
+            .privacy-modal-desc {
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            .privacy-promise-card {
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+
+            .privacy-modal-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .privacy-accept-btn,
+            .privacy-decline-btn {
+                padding: 12px 16px;
+                font-size: 12px;
+                min-height: 44px;
+            }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .privacy-modal-card {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        /* ==========================================================================
+           SLIDE 4 HUMANIZATION — Coming Soon stamp + founder voice
+           ========================================================================== */
+
+        .friction-coming-stamp {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-sub);
+            border: 1px solid rgba(255, 213, 79, 0.22);
+            border-radius: 4px;
+            padding: 5px 10px;
+            display: inline-block;
+            transform: rotate(-1.5deg) translateY(1px);
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        .friction-coming-stamp::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 8px;
+            right: 8px;
+            height: 1px;
+            background: rgba(255, 80, 80, 0.45);
+            border-radius: 1px;
+        }
+
+        .friction-coming-stamp::after {
+            content: 'Closed beta · September 2026';
+            display: block;
+            font-size: 9px;
+            color: rgba(255, 213, 79, 0.65);
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        .founder-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--text-sub);
+            font-style: italic;
+            border-left: 2px solid rgba(255, 213, 79, 0.3);
+            padding-left: 14px;
+            margin-top: 4px;
+            letter-spacing: -0.01em;
+            line-height: 1.5;
+        }
+
+        .tag-pill::before {
+            content: '\00B7';
+            margin-right: 6px;
+            color: var(--accent);
+        }
+
+        /* ==========================================================================
+           SLIDE 4 (COST EFFICIENCY) — Tightened vertical rhythm after stamp removal
+           ========================================================================== */
+        #costEfficiencySlide .slide-inner {
+            gap: 14px;
+            padding-top: 8px;
+        }
+
+        #costEfficiencySlide .popping:nth-of-type(1) {
+            margin-top: -6px;
+        }
+
+        #costEfficiencySlide .body-lead {
+            margin-bottom: 4px;
+        }
+
+        #costEfficiencySlide .founder-note {
+            margin-top: -2px;
+            margin-bottom: 8px;
+        }
+
+        #costEfficiencySlide .breach-container {
+            margin: 4px auto;
+        }
+
+        #costEfficiencySlide .cost-impact-card {
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Soft Honey Cursor Glow Follower -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- 100dvh Vertical Snap Narrative Deck -->
+    <main class="story-deck" id="storyDeck">
+
+        <!-- ==========================================================================
+             SLIDE 1: THE HERO
+             ========================================================================== -->
+        <section class="slide" id="heroSlide">
+            <div class="slide-inner">
+                <div class="tag-pill reveal">Execution Alarm</div>
+
+                <h1 class="hero-headline">
+                    Meet Morro — A solution to all your snoozes.
+                </h1>
+
+                <p class="body-lead reveal">
+                    No snooze buttons. No negotiation. Designed for the single most critical moment of your day: the first ten seconds after waking up.
+                </p>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>Scroll down</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 2: THE 7 AM NEGOTIATION
+             ========================================================================== -->
+        <section class="slide" id="problemSlide">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Morning Psychology</div>
+
+                <h2 class="popping">
+                    Your tired brain will say anything to stay in bed.
+                </h2>
+
+                <p class="body-lead popping">
+                    When your alarm rings, reason disappears. You dismiss it, roll over, and wake up 45 minutes later filled with regret. Morro forces your past self to hold your present self accountable.
+                </p>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>How it works</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 3: THE CORE FEATURE (VOICE COMMITMENT)
+             ========================================================================== -->
+        <section class="slide" id="featureSlide">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Voice Commitment</div>
+
+                <h2 class="popping">
+                    Hear your own promise.
+                </h2>
+
+                <!-- Waveform Pulse Graphic -->
+                <div class="waveform-container popping" aria-hidden="true">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+
+                <p class="body-lead popping">
+                    You record a 15-second promise at night. The alarm plays it back in the morning, and it won't shut up until you listen to your own voice telling you to get up.
+                </p>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>Friction Gates</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 4: COST EFFICIENCY — THE WAKE-UP FORCE FIELD
+             ========================================================================== -->
+        <section class="slide" id="costEfficiencySlide">
+            <div class="slide-inner">
+
+                <h2 class="popping">
+                    When your voice promise isn't enough, go physical.
+                </h2>
+
+                <p class="body-lead popping">
+                    Morro deploys cognitive and physical friction gates that physically prevent snoozing. Solve math. Scan a barcode. Photograph your keys. You can't passive-scroll your way back to sleep.
+                </p>
+
+                <p class="founder-note popping">
+                    Handbuilt because we slept badly too. A commitment device for people who mean it and need the friction to actually move.
+                </p>
+
+                <!-- UNIQUE CONTAINMENT BREACH ANIMATION -->
+                <div class="breach-container popping" aria-label="Force field breach animation showing commitment mechanism">
+                    <div class="breach-outer-ring"></div>
+                    <div class="breach-middle-ring"></div>
+                    <div class="breach-inner-ring"></div>
+                    <div class="breach-core">
+                        <div class="breach-icon-ring">
+                            <svg class="breach-clock" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                                <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                                <path d="M32 16V32L44 40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="32" cy="32" r="3" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="breach-pulse"></div>
+                    </div>
+                    <div class="breach-particle p1"></div>
+                    <div class="breach-particle p2"></div>
+                    <div class="breach-particle p3"></div>
+                    <div class="breach-particle p4"></div>
+                    <div class="breach-particle p5"></div>
+                    <div class="breach-particle p6"></div>
+                </div>
+
+                <!-- Cost Efficient Card with Emphasis -->
+                <div class="cost-impact-card popping">
+                    <div class="cost-header">
+                        <span class="cost-badge">COST EFFICIENT</span>
+                        <span class="cost-stat">3x</span>
+                    </div>
+                    <div class="cost-body">
+                        <p>Morro delivers commitment-gate functionality at <strong>1/3 the cost</strong> of legacy alarm apps. No subscriptions for physical gates. No hardware add-ons. Just friction.</p>
+                    </div>
+                    <div class="cost-footer">
+                        <span class="cost-category">Rapid Math</span>
+                        <span class="cost-sep">|</span>
+                        <span class="cost-category">QR Scan</span>
+                        <span class="cost-sep">|</span>
+                        <span class="cost-category">Photo Hunt</span>
+                        <span class="cost-sep">|</span>
+                        <span class="cost-category">Affirmations</span>
+                    </div>
+                </div>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>See It Work</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 5: FRICTION GATE INTERACTIVE SIMULATOR
+             ========================================================================== -->
+        <section class="slide" id="frictionSlide">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Friction Mechanism</div>
+
+                <h2 class="popping">
+                    Unskippable gates. Zero excuses.
+                </h2>
+
+                <p class="body-lead popping">
+                    When voice promises aren't enough, deploy physical and cognitive friction. Solve rapid math, repeat positive affirmations, scan distant QR codes, or complete household photo hunts to disarm the alarm.
+                </p>
+
+                <!-- Interactive Friction Gate Simulator Card -->
+                <div class="simulator-card popping">
+                    <div class="gate-nav" role="tablist" aria-label="Friction Gate Options">
+                        <button type="button" class="gate-btn active" data-gate="qr" role="tab" aria-selected="true" aria-controls="gate-qr">QR SCAN</button>
+                        <button type="button" class="gate-btn" data-gate="hunt" role="tab" aria-selected="false" aria-controls="gate-hunt">OBJECT HUNT</button>
+                        <button type="button" class="gate-btn" data-gate="math" role="tab" aria-selected="false" aria-controls="gate-math">RAPID MATH</button>
+                        <button type="button" class="gate-btn" data-gate="affirm" role="tab" aria-selected="false" aria-controls="gate-affirm">AFFIRMATION</button>
+                    </div>
+
+                    <div class="simulator-stage">
+                        <!-- Gate 1: QR Scan -->
+                        <div class="gate-view active" id="gate-qr" role="tabpanel">
+                            <div class="sr-only">QR Code Scanner Gate: Scan the QR code to verify your commitment</div>
+                            <div class="qr-scanner-box" aria-hidden="true">
+                                <div class="qr-corners"></div>
+                                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: rgba(255, 255, 255, 0.45);"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                <div class="qr-laser"></div>
+                            </div>
+                            <div class="sim-status">Target Verified: 100% Match</div>
+                            <div class="sim-subtext">Scan your bathroom sink or kitchen barcode to physically disarm.</div>
+                        </div>
+
+                        <!-- Gate 2: Object Hunt -->
+                        <div class="gate-view" id="gate-hunt" role="tabpanel">
+                            <div class="sr-only">Object Hunt Gate: Find and photograph the required household object</div>
+                            <div class="hunt-viewfinder" aria-hidden="true">
+                                <div class="hunt-target">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                                </div>
+                            </div>
+                            <div class="sim-status">ML Kit Vision — Item Confirmed</div>
+                            <div class="sim-subtext">Photograph a random household item: Coffee Mug, Toothbrush, or Keys.</div>
+                        </div>
+
+                        <!-- Gate 3: Rapid Math -->
+                        <div class="gate-view" id="gate-math" role="tabpanel">
+                            <div class="sr-only">Rapid Math Gate: Solve the math equation to verify your commitment</div>
+                            <div class="math-equation-row" aria-hidden="true">
+                                <span>(38 + 27) &times; 2 =</span>
+                                <span class="math-badge">130</span>
+                            </div>
+                            <div class="sim-status">Cognitive Lock Disengaged</div>
+                            <div class="sim-subtext">Solve dynamic equations to jumpstart your prefrontal cortex instantly.</div>
+                        </div>
+
+                        <!-- Gate 4: Affirmation -->
+                        <div class="gate-view" id="gate-affirm" role="tabpanel">
+                            <div class="sr-only">Affirmation Gate: Complete the affirmation to verify your commitment</div>
+                            <div class="affirmation-visual" aria-hidden="true">
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                                <div class="affirmation-bar"></div>
+                            </div>
+                            <div class="sim-status">Vocal Match Confirmed</div>
+                            <div class="sim-subtext">Speak your morning affirmation out loud to seal your execution intent.</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Cost Advantage Row -->
+                    <div class="cost-strip">
+                        <span class="cost-strip-tag">Cost Advantage</span>
+                        <div class="cost-strip-desc">
+                            <strong>Most cost-effective on the market.</strong> All physical gates included at 1/3 the cost of legacy apps, with $0 extra hardware.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>Privacy & Access</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 6: PRIVACY & LOCAL ARCHITECTURE (WITH BRAND FINE PRINT)
+             ========================================================================== -->
+        <section class="slide" id="privacySlide">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Sovereign & Local</div>
+
+                <h2 class="popping">
+                    Your data stays on your device.
+                </h2>
+
+                <p class="body-lead popping">
+                    Your voice memos, alarm routines, and mission data never leave your phone. No cloud servers, no trackers, and no ad profiling.
+                </p>
+
+                <div class="fluid-card popping">
+                    <div class="fluid-stat-row">
+                        <span style="color: var(--text-muted);">Voice & Memos</span>
+                        <span style="color: var(--accent); font-weight: 600;">100% On-device storage</span>
+                    </div>
+                    <div class="fluid-stat-row">
+                        <span style="color: var(--text-muted);">Cloud Sync</span>
+                        <span style="color: var(--text-pure); font-weight: 600;">Zero (Never transmitted)</span>
+                    </div>
+                    <div class="fluid-stat-row">
+                        <span style="color: var(--text-muted);">Alarm Reliability</span>
+                        <span style="color: var(--accent); font-weight: 600;">Android AlarmClock & Doze Bypass</span>
+                    </div>
+                </div>
+
+                <!-- Tucked-away brand fine print: active subscription/login requirement -->
+                <div class="fine-print popping">
+                    * Morro requires an active subscription and account login to verify entitlement and manage alarms. All personal voice recordings, mission files, and daily schedules remain stored strictly in your phone's local storage sandbox.
+                </div>
+
+                <button type="button" class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll to next section">
+                    <span>Early Access</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SLIDE 7: THE BETA RESERVATION FORM
+             ========================================================================== -->
+        <section class="slide" id="captureSlide">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Public Beta</div>
+
+                <h2 class="popping">
+                    Stop snoozing your life away. Coming soon.
+                </h2>
+
+                <p class="body-lead popping">
+                    Be the first to break the morning negotiation loop. Enter your email for instant access to the closed Android beta.
+                </p>
+
+                <!-- High-Impact Capture Card -->
+                <div class="capture-card popping">
+                    <form class="signup-form" id="betaForm" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+                        <input type="hidden" name="subject" value="New Morro Beta Reservation">
+                        <input type="hidden" name="ref" id="refField" value="">
+                        <!-- Botcheck Honeypot -->
+                        <input type="checkbox" name="botcheck" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                        <div class="input-group">
+                            <input type="email" name="email" class="email-input" placeholder="Enter your email address" aria-label="Your email address" required autocomplete="email">
+                        </div>
+
+                        <label class="checkbox-row">
+                            <input type="checkbox" name="android_confirmed" required>
+                            <span>I confirm I am on Android (8.0+)</span>
+                        </label>
+
+                        <button type="submit" class="honey-btn" id="submitBtn">
+                            <span>Get Early Beta Access</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+
+                        <div class="toast-msg" id="formToast" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+
+                <div class="fine-print popping" style="text-align: center;">
+                    * Closed beta access is free. Full release requires an active subscription and account login. Your voice commitments and alarm data stay 100% local on your device.
+                </div>
+
+                <footer style="margin-top: 8px; font-size: 11px; color: var(--text-sub); font-family: var(--font-mono); line-height: 1.6;" class="popping">
+                    Morro is provided AS-IS. &copy; 2026. <a href="privacy.html" style="color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">Privacy Policy</a> | <a href="terms.html" style="color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">Terms of Service</a>
+                </footer>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         AMOLED BLACK & SOFT HONEY PRIVACY ACCEPTANCE MODAL
+         ========================================================================== -->
+    <div id="privacyModal" class="privacy-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" aria-describedby="privacyModalDesc" aria-hidden="true">
+        <div class="privacy-modal-card">
+            <div class="tag-pill">Data Sovereignty Gate</div>
+            <div class="privacy-promise-card">Mornings belong to you. We store nothing on our servers.</div>
+            <h3 id="privacyModalTitle" class="privacy-modal-title">We built Morro because we woke up scared every day and wished someone forced us to move.</h3>
+            <p id="privacyModalDesc" class="privacy-modal-desc">
+                Before entering your email, please confirm you agree to our Privacy Policy.<br><br>
+                Morro is built on a 100% local-first shield: your voice recordings, mission files, and morning habits are stored exclusively in your private Android sandbox (<code class="code-inline">context.filesDir</code>) and never touch our servers. We use your email strictly to deliver closed-beta APK invites.
+            </p>
+            <a href="privacy.html" target="_blank" rel="noopener noreferrer" class="privacy-modal-link">
+                <span>Read Full Privacy Policy</span>
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+            <div class="privacy-modal-actions">
+                <button type="button" class="privacy-accept-btn" id="privacyAcceptBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    I've Read &amp; Agreed
+                </button>
+                <button type="button" class="privacy-decline-btn" id="privacyDeclineBtn">Nah, keep me out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         LIGHTWEIGHT INTERACTION & STATE LOGIC
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Follower Honey Glow Cursor / Touch
+            const glow = document.getElementById('cursorGlow');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let curX = mouseX;
+            let curY = mouseY;
+
+            window.addEventListener('pointermove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function renderGlow() {
+                curX += (mouseX - curX) * 0.08;
+                curY += (mouseY - curY) * 0.08;
+                if (glow) {
+                    glow.style.left = `${curX}px`;
+                    glow.style.top = `${curY}px`;
+                }
+                requestAnimationFrame(renderGlow);
+            }
+            renderGlow();
+
+            // 2. Scroll Deck & Slide Intersection Observers
+            const slides = document.querySelectorAll('.slide');
+            const heroHeadline = document.querySelector('#heroSlide h1');
+            const storyDeck = document.getElementById('storyDeck');
+
+            // Hero headline smooth entrance on load
+            if (heroHeadline) {
+                heroHeadline.classList.add('hero-headline');
+                requestAnimationFrame(() => {
+                    heroHeadline.classList.add('hero-show');
+                });
+            }
+
+            // Deterministic scroll exit/enter for hero headline based on scrollTop
+            if (storyDeck && heroHeadline) {
+                storyDeck.addEventListener('scroll', () => {
+                    const scrollTop = storyDeck.scrollTop;
+                    if (scrollTop > 40) {
+                        heroHeadline.classList.add('hero-exit');
+                        heroHeadline.classList.remove('hero-show');
+                    } else {
+                        heroHeadline.classList.remove('hero-exit');
+                        heroHeadline.classList.add('hero-show');
+                    }
+                }, { passive: true });
+            }
+
+            // Slide active observer with dynamic toggle for repeat popping
+            const observerOptions = {
+                root: storyDeck,
+                threshold: 0.45
+            };
+
+            const slideObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, observerOptions);
+
+            slides.forEach(slide => slideObserver.observe(slide));
+
+            if (slides.length > 0) {
+                slides[0].classList.add('active');
+            }
+
+            // Interactive scroll indicators (click to smoothly scroll to next slide)
+            document.querySelectorAll('.scroll-indicator').forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    const nextSlide = slides[idx + 1];
+                    if (nextSlide) {
+                        nextSlide.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const nextSlide = slides[idx + 1];
+                        if (nextSlide) {
+                            nextSlide.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            // 3. High-Performance Ambient Honey Particle Background (Retina 60fps Canvas)
+            const canvas = document.createElement('canvas');
+            canvas.id = 'ambientBg';
+            canvas.setAttribute('aria-hidden', 'true');
+            document.body.insertBefore(canvas, document.body.firstChild);
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            function resizeCanvas() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                ctx.scale(dpr, dpr);
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * window.innerWidth;
+                    this.y = Math.random() * window.innerHeight;
+                    this.size = Math.random() * 2 + 0.8;
+                    this.speedX = Math.random() * 0.4 - 0.2;
+                    this.speedY = Math.random() * 0.4 - 0.2;
+                    this.opacity = Math.random() * 0.35 + 0.15;
+                    this.glow = Math.random() * 0.5 + 0.5;
+                }
+
+                update(mX, mY) {
+                    const dx = mX - this.x;
+                    const dy = mY - this.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < 22500 && distSq > 0) { // 150px radius
+                        const distance = Math.sqrt(distSq);
+                        const force = (150 - distance) / 150;
+                        this.speedX += (dx / distance) * force * 0.2;
+                        this.speedY += (dy / distance) * force * 0.2;
+                    }
+
+                    this.speedX *= 0.96;
+                    this.speedY *= 0.96;
+
+                    const speedSq = this.speedX * this.speedX + this.speedY * this.speedY;
+                    const maxSpeed = 1.8;
+                    if (speedSq > maxSpeed * maxSpeed) {
+                        const speed = Math.sqrt(speedSq);
+                        this.speedX = (this.speedX / speed) * maxSpeed;
+                        this.speedY = (this.speedY / speed) * maxSpeed;
+                    }
+
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x < 0) { this.x = 0; this.speedX *= -1; }
+                    if (this.x > window.innerWidth) { this.x = window.innerWidth; this.speedX *= -1; }
+                    if (this.y < 0) { this.y = 0; this.speedY *= -1; }
+                    if (this.y > window.innerHeight) { this.y = window.innerHeight; this.speedY *= -1; }
+                }
+
+                draw() {
+                    // Optimized dual-circle render (no shadowBlur for lightning-fast 60fps mobile performance)
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 213, 79, ${this.opacity * 0.25 * this.glow})`;
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 213, 79, ${this.opacity * this.glow})`;
+                    ctx.fill();
+                }
+            }
+
+            const particles = [];
+            const particleCount = Math.min(65, Math.floor((window.innerWidth * window.innerHeight) / 14000));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            let canvasMouseX = -9999;
+            let canvasMouseY = -9999;
+            let animationId;
+            let lastTime = 0;
+            const fps = 60;
+            const frameDuration = 1000 / fps;
+
+            function animate(currentTime) {
+                const deltaTime = currentTime - lastTime;
+                if (deltaTime >= frameDuration) {
+                    lastTime = currentTime - (deltaTime % frameDuration);
+
+                    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+                    // Batched connection lines for high performance
+                    ctx.beginPath();
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distSq = dx * dx + dy * dy;
+                            if (distSq < 10000) { // 100px connection threshold
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                            }
+                        }
+                    }
+                    ctx.strokeStyle = 'rgba(255, 213, 79, 0.07)';
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+
+                    particles.forEach(p => {
+                        p.update(canvasMouseX, canvasMouseY);
+                        p.draw();
+                    });
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+
+            animate(0);
+
+            window.addEventListener('pointermove', (e) => {
+                canvasMouseX = e.clientX;
+                canvasMouseY = e.clientY;
+            });
+            window.addEventListener('pointerleave', () => {
+                canvasMouseX = -9999;
+                canvasMouseY = -9999;
+            });
+            window.addEventListener('touchmove', (e) => {
+                if (e.touches && e.touches[0]) {
+                    canvasMouseX = e.touches[0].clientX;
+                    canvasMouseY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+            window.addEventListener('touchend', () => {
+                canvasMouseX = -9999;
+                canvasMouseY = -9999;
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(animationId);
+                } else {
+                    lastTime = performance.now();
+                    animate(lastTime);
+                }
+            });
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                cancelAnimationFrame(animationId);
+                canvas.style.display = 'none';
+            }
+
+            // 4. Referral Tracking (?ref=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const refSource = urlParams.get('ref') || 'direct';
+            const refField = document.getElementById('refField');
+            if (refField) refField.value = refSource;
+
+            // 5. Web3Forms Submission with Loading State Defense
+            const form = document.getElementById('betaForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const toast = document.getElementById('formToast');
+
+            // 6. Friction Gate Simulator Interaction
+            const gateNav = document.querySelector('.gate-nav');
+            const gateViews = document.querySelectorAll('.gate-view');
+
+            if (gateNav) {
+                gateNav.addEventListener('click', (e) => {
+                    const target = e.target.closest('.gate-btn');
+                    if (!target) return;
+
+                    // Update active state
+                    document.querySelectorAll('.gate-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    target.classList.add('active');
+                    target.setAttribute('aria-selected', 'true');
+
+                    // Show corresponding view
+                    const gateId = target.getAttribute('data-gate');
+                    gateViews.forEach(view => {
+                        view.classList.remove('active');
+                        if (view.id === `gate-${gateId}`) {
+                            view.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            // 7. Dynamic Math Equation Generator
+            function generateMathEquation() {
+                const num1 = Math.floor(Math.random() * 50) + 10;
+                const num2 = Math.floor(Math.random() * 20) + 5;
+                const operation = Math.random() > 0.5 ? '+' : '×';
+                const result = operation === '+' ? num1 + num2 : num1 * num2;
+
+                const equationRow = document.querySelector('#gate-math .math-equation-row');
+                if (equationRow) {
+                    equationRow.innerHTML = `
+                        <span>(${num1} ${operation} ${num2}) =</span>
+                        <span class="math-badge">${result}</span>
+                    `;
+                }
+            }
+
+            // Generate a new equation when the math gate becomes active
+            if (gateViews.length > 0) {
+                const mathGate = document.getElementById('gate-math');
+                if (mathGate) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && entry.target.classList.contains('active')) {
+                                generateMathEquation();
+                            }
+                        });
+                    }, { threshold: 0.5 });
+
+                    observer.observe(mathGate);
+                }
+            }
+
+            // 8. Web3Forms Submission with Loading State Defense
+            if (form && submitBtn && toast) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    if (!isPrivacyAccepted()) {
+                        openPrivacyModal();
+                        return;
+                    }
+
+                    const emailInput = form.querySelector('input[type="email"]');
+                    const androidCheck = form.querySelector('input[name="android_confirmed"]');
+
+                    const emailVal = emailInput ? emailInput.value.trim() : '';
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailInput || !emailInput.checkValidity() || !emailRegex.test(emailVal)) {
+                        showToast('Please enter a valid email address.', 'error');
+                        return;
+                    }
+
+                    if (!androidCheck.checked) {
+                        showToast('Please confirm you have an Android device.', 'error');
+                        return;
+                    }
+
+                    const originalBtnContent = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span>SECURING SPOT...</span>';
+                    toast.style.display = 'none';
+
+                    try {
+                        const formData = new FormData(form);
+
+                        const accessKeyInput = form.querySelector('input[name="access_key"]');
+                        if (accessKeyInput && accessKeyInput.value === 'YOUR_ACCESS_KEY') {
+                            showToast('CRITICAL ERROR: Web3Forms API Key missing in HTML.', 'error');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnContent;
+                            return;
+                        }
+
+                        const response = await fetch('https://api.web3forms.com/submit', {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            showToast('Welcome aboard. Beta download link will arrive soon.', 'success');
+                            form.reset();
+                        } else {
+                            throw new Error(result.message || 'Submission failed');
+                        }
+                    } catch (err) {
+                        showToast('Could not reach signup server. Check your connection.', 'error');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnContent;
+                    }
+                });
+
+                function showToast(msg, type) {
+                    toast.textContent = msg;
+                    toast.className = `toast-msg ${type}`;
+                }
+            }
+
+            // ==========================================================================
+            // 9. PRIVACY ACCEPTANCE GATE MODAL
+            // ==========================================================================
+            const privacyModal = document.getElementById('privacyModal');
+            window.addEventListener("beforeunload", () => {
+                cancelAnimationFrame(animationId);
+            });
+            const privacyAcceptBtn = document.getElementById('privacyAcceptBtn');
+            const privacyDeclineBtn = document.getElementById('privacyDeclineBtn');
+            function isPrivacyAccepted() {
+                try {
+                    return localStorage.getItem('morro_privacy_accepted') === 'true';
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            function openPrivacyModal() {
+                if (!privacyModal) return;
+                privacyModal.classList.add('active');
+                privacyModal.setAttribute('aria-hidden', 'false');
+
+                // Shift focus to primary action button
+                requestAnimationFrame(() => {
+                    if (privacyAcceptBtn) privacyAcceptBtn.focus();
+                });
+            }
+
+            function closePrivacyModal() {
+                if (!privacyModal) return;
+                privacyModal.classList.remove('active');
+                privacyModal.setAttribute('aria-hidden', 'true');
+            }
+
+           // Intercept attempts to focus, click, or type in the email input before acceptance
+            if (betaEmailInput) {
+                const interceptInput = (e) => {
+                    if (!isPrivacyAccepted()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        betaEmailInput.blur();
+                        openPrivacyModal();
+                    }
+                };
+
+                betaEmailInput.addEventListener('focus', interceptInput);
+                betaEmailInput.addEventListener('pointerdown', interceptInput);
+                betaEmailInput.addEventListener('click', interceptInput);
+                betaEmailInput.addEventListener('keydown', interceptInput);
+                betaEmailInput.addEventListener('beforeinput', interceptInput);
+            }
+
+            // User accepts privacy policy
+            if (privacyAcceptBtn) {
+                privacyAcceptBtn.addEventListener('click', () => {
+                    try {
+                        localStorage.setItem('morro_privacy_accepted', 'true');
+                    } catch (e) {}
+
+                    closePrivacyModal();
+                });
+            }
+
+            // User declines / closes
+            if (privacyDeclineBtn) {
+                privacyDeclineBtn.addEventListener('click', () => {
+                    closePrivacyModal();
+                    if (betaEmailInput) betaEmailInput.blur();
+                });
+            }
+
+            // Close on overlay backdrop click
+            if (privacyModal) {
+                privacyModal.addEventListener('click', (e) => {
+                    if (e.target === privacyModal) {
+                        closePrivacyModal();
+                        if (betaEmailInput) betaEmailInput.blur();
+                    }
+                });
+            }
+
+            // A11y: Escape key and Tab focus trap inside modal
+            document.addEventListener('keydown', (e) => {
+                if (!privacyModal || !privacyModal.classList.contains('active')) return;
+
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closePrivacyModal();
+                    if (betaEmailInput) betaEmailInput.blur();
+                    return;
+                }
+
+                if (e.key === 'Tab') {
+                    const focusableElements = privacyModal.querySelectorAll(
+                        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (focusableElements.length === 0) return;
+
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

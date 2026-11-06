@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <!-- Morro Landing Page -->
+    <url>
+        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/"/>
+        <image:image>
+            <image:loc>https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png</image:loc>
+            <image:title>Morro — An Alarm That Refuses to Let You Fail</image:title>
+            <image:caption>An alarm that won't shut off until you hear yourself promise what you're doing today. A commitment device for your first task.</image:caption>
+        </image:image>
+    </url>
+
+    <!-- Privacy Policy -->
+    <url>
+        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/privacy.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/privacy.html"/>
+    </url>
+
+    <!-- Terms of Service -->
+    <url>
+        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/terms.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/terms.html"/>
+    </url>
+
+</urlset>
