@@ -2287,9 +2287,6 @@
             // ==========================================================================
             // 9. PRIVACY ACCEPTANCE GATE MODAL
             // ==========================================================================
-            // ==========================================================================
-            // 9. PRIVACY ACCEPTANCE GATE MODAL
-            // ==========================================================================
             const privacyModal = document.getElementById('privacyModal');
             const privacyAcceptBtn = document.getElementById('privacyAcceptBtn');
             const privacyDeclineBtn = document.getElementById('privacyDeclineBtn');
@@ -2375,103 +2372,6 @@
                 });
             }
         });
-    
-
-
-          // Bulletproof Privacy Modal Interception
-            if (betaEmailInput) {
-                // Initialize input state based on acceptance
-                if (!isPrivacyAccepted()) {
-                    betaEmailInput.setAttribute('readonly', 'readonly');
-                }
-
-                const interceptInteraction = (e) => {
-                    if (!isPrivacyAccepted()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        // Force blur just in case
-                        betaEmailInput.blur();
-                        
-                        // Open the modal
-                        openPrivacyModal();
-                    }
-                };
-
-                // Use pointerdown and focusin for earlier interception on mobile
-                ['pointerdown', 'focusin', 'click'].forEach(eventType => {
-                    betaEmailInput.addEventListener(eventType, interceptInteraction, { capture: true });
-                });
-                
-                // When accepted, unlock the input so they can type
-                if (privacyAcceptBtn) {
-                    privacyAcceptBtn.addEventListener('click', () => {
-                        betaEmailInput.removeAttribute('readonly');
-                    });
-                }
-            }
-            // User accepts privacy policy
-            if (privacyAcceptBtn) {
-                privacyAcceptBtn.addEventListener('click', () => {
-                    try {
-                        localStorage.setItem('morro_privacy_accepted', 'true');
-                    } catch (e) {}
-
-                    closePrivacyModal();
-                });
-            }
-
-            // User declines / closes
-            if (privacyDeclineBtn) {
-                privacyDeclineBtn.addEventListener('click', () => {
-                    closePrivacyModal();
-                    if (betaEmailInput) betaEmailInput.blur();
-                });
-            }
-
-            // Close on overlay backdrop click
-            if (privacyModal) {
-                privacyModal.addEventListener('click', (e) => {
-                    if (e.target === privacyModal) {
-                        closePrivacyModal();
-                        if (betaEmailInput) betaEmailInput.blur();
-                    }
-                });
-            }
-
-            // A11y: Escape key and Tab focus trap inside modal
-            document.addEventListener('keydown', (e) => {
-                if (!privacyModal || !privacyModal.classList.contains('active')) return;
-
-                if (e.key === 'Escape') {
-                    e.preventDefault();
-                    closePrivacyModal();
-                    if (betaEmailInput) betaEmailInput.blur();
-                    return;
-                }
-
-                if (e.key === 'Tab') {
-                    const focusableElements = privacyModal.querySelectorAll(
-                        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-                    );
-                    if (focusableElements.length === 0) return;
-
-                    const firstElement = focusableElements[0];
-                    const lastElement = focusableElements[focusableElements.length - 1];
-
-                    if (e.shiftKey) {
-                        if (document.activeElement === firstElement) {
-                            e.preventDefault();
-                            lastElement.focus();
-                        }
-                    } else {
-                        if (document.activeElement === lastElement) {
-                            e.preventDefault();
-                            firstElement.focus();
-                        }
-                    }
-                }
-            });
     </script>
 </body>
 </html>
