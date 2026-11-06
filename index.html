@@ -2287,12 +2287,14 @@
             // ==========================================================================
             // 9. PRIVACY ACCEPTANCE GATE MODAL
             // ==========================================================================
+            // ==========================================================================
+            // 9. PRIVACY ACCEPTANCE GATE MODAL
+            // ==========================================================================
             const privacyModal = document.getElementById('privacyModal');
-            window.addEventListener("beforeunload", () => {
-                cancelAnimationFrame(animationId);
-            });
             const privacyAcceptBtn = document.getElementById('privacyAcceptBtn');
             const privacyDeclineBtn = document.getElementById('privacyDeclineBtn');
+            const betaEmailInput = document.querySelector('.email-input');
+
             function isPrivacyAccepted() {
                 try {
                     return localStorage.getItem('morro_privacy_accepted') === 'true';
@@ -2305,11 +2307,6 @@
                 if (!privacyModal) return;
                 privacyModal.classList.add('active');
                 privacyModal.setAttribute('aria-hidden', 'false');
-
-                // Shift focus to primary action button
-                requestAnimationFrame(() => {
-                    if (privacyAcceptBtn) privacyAcceptBtn.focus();
-                });
             }
 
             function closePrivacyModal() {
@@ -2317,6 +2314,69 @@
                 privacyModal.classList.remove('active');
                 privacyModal.setAttribute('aria-hidden', 'true');
             }
+
+            //  BULLETPROOF INTERCEPTION
+            if (betaEmailInput) {
+                const interceptInteraction = (e) => {
+                    if (!isPrivacyAccepted()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        
+                        betaEmailInput.setAttribute('readonly', 'true');
+                        betaEmailInput.blur(); 
+                        
+                        openPrivacyModal();
+                    }
+                };
+
+                ['mousedown', 'touchstart', 'focusin', 'click', 'keydown'].forEach(eventType => {
+                    betaEmailInput.addEventListener(eventType, interceptInteraction, { capture: true });
+                });
+            }
+
+            // ✅ THE FIX: ACCEPT BUTTON LOGIC
+            if (privacyAcceptBtn) {
+                privacyAcceptBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    try {
+                        localStorage.setItem('morro_privacy_accepted', 'true');
+                    } catch (err) {}
+
+                    closePrivacyModal();
+
+                    if (betaEmailInput) {
+                        betaEmailInput.removeAttribute('readonly');
+                        // Wait for modal animation to finish before raising keyboard
+                        setTimeout(() => {
+                            betaEmailInput.focus();
+                        }, 200);
+                    }
+                });
+            }
+
+            // DECLINE BUTTON LOGIC
+            if (privacyDeclineBtn) {
+                privacyDeclineBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closePrivacyModal();
+                    if (betaEmailInput) betaEmailInput.blur();
+                });
+            }
+
+            // CLOSE ON BACKDROP CLICK
+            if (privacyModal) {
+                privacyModal.addEventListener('click', (e) => {
+                    if (e.target === privacyModal) {
+                        closePrivacyModal();
+                        if (betaEmailInput) betaEmailInput.blur();
+                    }
+                });
+            }
+        });
+    
+
 
           // Bulletproof Privacy Modal Interception
             if (betaEmailInput) {
@@ -2412,7 +2472,6 @@
                     }
                 }
             });
-        });
     </script>
 </body>
 </html>
