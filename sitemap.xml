@@ -5,13 +5,13 @@
 
     <!-- Morro Landing Page -->
     <url>
-        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/</loc>
+        <loc>https://morrolandingpage.marhaanansari.workers.dev/</loc>
         <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://morrolandingpage.marhaanansari.workers.dev/"/>
         <image:image>
-            <image:loc>https://YOUR-CLOUDFLARE-URL.pages.dev/og-image.png</image:loc>
+            <image:loc>https://morrolandingpage.marhaanansari.workers.dev/og-image.png</image:loc>
             <image:title>Morro — An Alarm That Refuses to Let You Fail</image:title>
             <image:caption>An alarm that won't shut off until you hear yourself promise what you're doing today. A commitment device for your first task.</image:caption>
         </image:image>
@@ -19,20 +19,20 @@
 
     <!-- Privacy Policy -->
     <url>
-        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/privacy.html</loc>
+        <loc>https://morrolandingpage.marhaanansari.workers.dev/privacy.html</loc>
         <lastmod>2026-11-06</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/privacy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://morrolandingpage.marhaanansari.workers.dev/privacy.html"/>
     </url>
 
     <!-- Terms of Service -->
     <url>
-        <loc>https://YOUR-CLOUDFLARE-URL.pages.dev/terms.html</loc>
+        <loc>https://morrolandingpage.marhaanansari.workers.dev/terms.html</loc>
         <lastmod>2026-11-06</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://YOUR-CLOUDFLARE-URL.pages.dev/terms.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://morrolandingpage.marhaanansari.workers.dev/terms.html"/>
     </url>
 
 </urlset>
