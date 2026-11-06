@@ -2318,24 +2318,38 @@
                 privacyModal.setAttribute('aria-hidden', 'true');
             }
 
-           // Intercept attempts to focus, click, or type in the email input before acceptance
+          // Bulletproof Privacy Modal Interception
             if (betaEmailInput) {
-                const interceptInput = (e) => {
+                // Initialize input state based on acceptance
+                if (!isPrivacyAccepted()) {
+                    betaEmailInput.setAttribute('readonly', 'readonly');
+                }
+
+                const interceptInteraction = (e) => {
                     if (!isPrivacyAccepted()) {
                         e.preventDefault();
                         e.stopPropagation();
+                        
+                        // Force blur just in case
                         betaEmailInput.blur();
+                        
+                        // Open the modal
                         openPrivacyModal();
                     }
                 };
 
-                betaEmailInput.addEventListener('focus', interceptInput);
-                betaEmailInput.addEventListener('pointerdown', interceptInput);
-                betaEmailInput.addEventListener('click', interceptInput);
-                betaEmailInput.addEventListener('keydown', interceptInput);
-                betaEmailInput.addEventListener('beforeinput', interceptInput);
+                // Use pointerdown and focusin for earlier interception on mobile
+                ['pointerdown', 'focusin', 'click'].forEach(eventType => {
+                    betaEmailInput.addEventListener(eventType, interceptInteraction, { capture: true });
+                });
+                
+                // When accepted, unlock the input so they can type
+                if (privacyAcceptBtn) {
+                    privacyAcceptBtn.addEventListener('click', () => {
+                        betaEmailInput.removeAttribute('readonly');
+                    });
+                }
             }
-
             // User accepts privacy policy
             if (privacyAcceptBtn) {
                 privacyAcceptBtn.addEventListener('click', () => {
