@@ -1862,6 +1862,40 @@
             </div>
         </section>
 
+        <!-- ==========================================================================
+             SLIDE 8: THANK YOU / WAITLIST CONFIRMATION
+             ========================================================================== -->
+        <section class="slide" id="thankYouSlide" style="display: none;">
+            <div class="slide-inner">
+                <div class="tag-pill popping">Confirmed</div>
+
+                <h2 class="popping" style="font-size: clamp(28px, 6vw, 44px);">
+                    You're on the waitlist.
+                </h2>
+
+                <p class="body-lead popping" style="text-align: center; max-width: 480px;">
+                    Thanks for joining. We'll email you when your beta spot opens.
+                </p>
+
+                <div class="fluid-card popping" style="text-align: center; max-width: 480px; margin-top: 8px;">
+                    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+                        Questions? Reach out directly:
+                    </div>
+                    <a href="mailto:marhaanansari@gmail.com" style="font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                        marhaanansari@gmail.com
+                    </a>
+                </div>
+
+                <p class="fine-print popping" style="text-align: center; max-width: 480px; margin-top: 16px;">
+                    * Closed beta access is free. Full release requires an active subscription and account login. Your voice commitments and alarm data stay 100% local on your device.
+                </p>
+
+                <footer style="margin-top: 16px; font-size: 11px; color: var(--text-sub); font-family: var(--font-mono); line-height: 1.6;" class="popping">
+                    Morro is provided AS-IS. &copy; 2026. <a href="privacy.html" style="color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">Privacy Policy</a> | <a href="terms.html" style="color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">Terms of Service</a>
+                </footer>
+            </div>
+        </section>
+
     </main>
 
     <!-- ==========================================================================
@@ -2265,8 +2299,21 @@
                         const result = await response.json();
 
                         if (result.success) {
-                            showToast('Welcome aboard. Beta download link will arrive soon.', 'success');
-                            form.reset();
+                            // Hide capture slide, show thank you slide
+                            const captureSlide = document.getElementById('captureSlide');
+                            const thankYouSlide = document.getElementById('thankYouSlide');
+                            if (captureSlide) captureSlide.style.display = 'none';
+                            if (thankYouSlide) {
+                                thankYouSlide.style.display = 'flex';
+                                // Trigger animations
+                                requestAnimationFrame(() => {
+                                    thankYouSlide.classList.add('active');
+                                });
+                            }
+                            // Scroll to thank you slide
+                            if (thankYouSlide) {
+                                thankYouSlide.scrollIntoView({ behavior: 'smooth' });
+                            }
                         } else {
                             throw new Error(result.message || 'Submission failed');
                         }
