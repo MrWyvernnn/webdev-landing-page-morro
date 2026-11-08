@@ -58,6 +58,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .morro-mark:hover .morro-mark__symbol { transform: rotate(-12deg); }
 .morro-mark__word { font-family: var(--serif); font-weight: 700; font-size: 27px; line-height: 1; letter-spacing: -.055em; }
 .morro-mark__period { color: var(--tomato); }
+.morro-mark__descriptor { font-family: var(--serif); font-weight: 400; font-size: 27px; line-height: 1; letter-spacing: -.02em; color: var(--muted); opacity: 0.8; }
 .main-nav { display: flex; gap: clamp(22px, 3vw, 46px); margin-left: auto; margin-right: 15px; }
 .main-nav a { position: relative; padding: 6px 0; font-size: 12px; font-weight: 600; text-decoration: none; color: var(--ink-soft); transition: color .2s ease; }
 .main-nav a::after { position: absolute; content: ""; bottom: 0; left: 0; right: 100%; height: 1px; background: var(--tomato); transition: right .28s ease; }
@@ -71,6 +72,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .hero { position: relative; min-height: 670px; display: grid; grid-template-columns: 1.04fr .96fr; gap: 28px; align-items: center; padding-top: 70px; padding-bottom: 84px; }
 .hero-copy { position: relative; z-index: 3; padding: 20px 0 6px; }
 .hero-kicker { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); font: 500 9px/1 var(--mono); letter-spacing: .1em; }
+.hero-kicker--badge { display: inline-flex; align-items: center; gap: 9px; padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(217,95,69,.3); background: rgba(217,95,69,.1); color: var(--tomato-deep); font: 500 9px/1 var(--mono); letter-spacing: .1em; }
 .hero-kicker__dot, .eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tomato); box-shadow: 0 0 0 4px rgba(217,95,69,.12); animation: dot-pulse 2.5s infinite; }
 .hero-kicker__line { width: 25px; height: 1px; margin-left: 2px; background: var(--line); }
 .hero h1 { max-width: 650px; margin: 28px 0 20px; font: 600 clamp(54px, 6.45vw, 88px)/.99 var(--serif); letter-spacing: -.065em; }
