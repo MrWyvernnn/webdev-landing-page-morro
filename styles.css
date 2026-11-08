@@ -1017,3 +1017,33 @@ body.dialog-open { overflow: hidden; }
         margin-top: -20px !important;
     }
 }
+/* --- 1. ORANGE ALARM HIGHLIGHT --- */
+.kicker-accent {
+    color: #FF5722 !important; /* Premium tactical orange */
+    font-weight: 800 !important;
+}
+
+/* --- 2. MASTER ALIGNMENT FIX --- */
+#hero-title {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+.hero-title-line {
+    display: block !important;
+    white-space: normal !important; /* Stops the text from colliding */
+    width: 100% !important;
+    padding: 2px 0 !important;
+}
+
+/* --- 3. MOBILE TYPOGRAPHY SCALING --- */
+@media (max-width: 768px) {
+    #hero-title {
+        font-size: clamp(2rem, 7.5vw, 2.5rem) !important;
+        line-height: 1.15 !important;
+        margin-top: 12px !important;
+    }
+}
