@@ -223,8 +223,16 @@
     const referralField = document.getElementById("refField");
     if (!form || !email || !submitButton || !errorMessage || !successMessage) return;
 
-    const query = new URLSearchParams(window.location.search);
-    if (referralField) referralField.value = query.get("ref") || "direct";
+    const urlParams = new URLSearchParams(window.location.search);
+    let ref = urlParams.get('ref');
+    if (ref) {
+        // Strip everything except alphanumeric, dashes, and underscores. Limit to 50 chars.
+        const cleanRef = ref.replace(/[^a-zA-Z0-9_-]/g, '').substring(0, 50);
+        const refField = document.getElementById('ref_field');
+        if (refField) {
+            refField.value = cleanRef;
+        }
+    }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();

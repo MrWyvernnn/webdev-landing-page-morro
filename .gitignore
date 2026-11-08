@@ -2,3 +2,10 @@
 Thumbs.db
 .vscode/
 .idea/
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+node_modules/
+dist/
