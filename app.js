@@ -4,6 +4,122 @@
   const root = document.documentElement;
   root.classList.add("js-ready");
 
+  // --- Parallax for hero art (desktop only, respects reduced motion) ---
+  function initializeParallax() {
+    const prefersReduced = window.matchMedia(‘(prefers-reduced-motion: reduce)’).matches;
+    const isMobile = window.matchMedia(‘(max-width: 768px)’).matches;
+    if (prefersReduced || isMobile) return;
+
+    const clockScene = document.querySelector(‘.clock-scene’);
+    const phoneCard = document.querySelector(‘.phone-card’);
+    const sunDisc = document.querySelector(‘.sun-disc’);
+    const stickyNote = document.querySelector(‘.sticky-note’);
+    const orbits = document.querySelectorAll(‘.orbit’);
+
+    if (!clockScene) return;
+
+    let ticking = false;
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      const hero = document.querySelector(‘.hero’);
+      if (!hero) { ticking = false; return; }
+      const heroRect = hero.getBoundingClientRect();
+      const heroCenter = heroRect.top + heroRect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const distance = (viewportCenter - heroCenter) / viewportCenter; // -1 to 1
+
+      if (Math.abs(distance) > 1.5) { ticking = false; return; }
+
+      const factor = distance * 30; // max 30px movement
+      if (phoneCard) phoneCard.style.transform = `translateX(-48%) rotate(-3deg) translateY(${factor * 0.3}px)`;
+      if (sunDisc) sunDisc.style.transform = `translateY(${factor * 0.2}px)`;
+      if (stickyNote) stickyNote.style.transform = `rotate(6deg) translateY(${factor * 0.4}px)`;
+      orbits.forEach((orbit, i) => {
+        orbit.style.transform = `translateX(-50%) rotate(${i === 0 ? -22 : 53}deg) translateY(${factor * 0.15 * (i + 1)}px)`;
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener(‘scroll’, () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateParallax);
+      }
+    }, { passive: true });
+  }
+
+  // --- Smooth scroll for anchor links ---
+  function initializeSmoothScroll() {
+    document.querySelectorAll(‘a[href^="#"]’).forEach(anchor => {
+      anchor.addEventListener(‘click’, function(e) {
+        const targetId = this.getAttribute(‘href’);
+        if (targetId === ‘#’) return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          const headerHeight = document.querySelector(‘.site-header’)?.offsetHeight || 0;
+          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+          window.scrollTo({ top: targetPosition, behavior: ‘smooth’ });
+        }
+      });
+    });
+  }
+
+  // --- Enhanced button ripple effect ---
+  function initializeButtonRipple() {
+    document.querySelectorAll(‘.button, .text-link, .gate-tab, .waitlist-form__submit’).forEach(btn => {
+      btn.addEventListener(‘click’, function(e) {
+        const rect = this.getBoundingClientRect();
+        const ripple = document.createElement(‘span’);
+        ripple.style.cssText = `
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.3);
+          transform: scale(0);
+          animation: ripple 0.4s ease-out;
+          pointer-events: none;
+          left: ${e.clientX - rect.left}px;
+          top: ${e.clientY - rect.top}px;
+          width: ${Math.max(rect.width, rect.height)}px;
+          height: ${Math.max(rect.width, rect.height)}px;
+          margin-left: -${Math.max(rect.width, rect.height) / 2}px;
+          margin-top: -${Math.max(rect.width, rect.height) / 2}px;
+        `;
+        this.style.position = ‘relative’;
+        this.style.overflow = ‘hidden’;
+        this.appendChild(ripple);
+        ripple.addEventListener(‘animationend’, () => ripple.remove());
+      });
+    });
+
+    // Add ripple keyframes if not exists
+    if (!document.querySelector(‘#ripple-styles’)) {
+      const style = document.createElement(‘style’);
+      style.id = ‘ripple-styles’;
+      style.textContent = `
+        @keyframes ripple {
+          to { transform: scale(2.5); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // --- Keyboard navigation for hero actions ---
+  function initializeKeyboardNav() {
+    document.addEventListener(‘keydown’, (e) => {
+      if (e.key === ‘Enter’ || e.key === ‘ ‘) {
+        const active = document.activeElement;
+        if (active.classList.contains(‘text-link’) || active.classList.contains(‘button’)) {
+          e.preventDefault();
+          active.click();
+        }
+      }
+    });
+  }
+
+  // --- Intersection Observer for scroll reveals ---
   function initializeReveals() {
     const targets = document.querySelectorAll("[data-reveal]");
     if (!("IntersectionObserver" in window)) {
@@ -18,11 +134,12 @@
           currentObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -30px 0px" });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
     targets.forEach((target) => observer.observe(target));
   }
 
+  // --- Scroll progress bar ---
   function initializeScrollProgress() {
     const progress = document.getElementById("scrollProgress");
     if (!progress) return;
@@ -45,8 +162,9 @@
     update();
   }
 
+  // --- Gate tabs ---
   function initializeGateTabs() {
-    const tabs = Array.from(document.querySelectorAll(".gate-tab[role='tab']"));
+    const tabs = Array.from(document.querySelectorAll(".gate-tab[role=’tab’]"));
     const panels = tabs.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
     if (!tabs.length || panels.some((panel) => !panel)) return;
 
@@ -58,6 +176,13 @@
         tab.setAttribute("aria-selected", String(selected));
         tab.tabIndex = selected ? 0 : -1;
         panels[tabIndex].hidden = !selected;
+        if (selected) {
+          panels[tabIndex].setAttribute(‘data-reveal’, ‘’);
+          panels[tabIndex].classList.remove(‘is-visible’);
+          // Force reflow for animation
+          void panels[tabIndex].offsetWidth;
+          panels[tabIndex].classList.add(‘is-visible’);
+        }
       });
       if (moveFocus) tabs[nextIndex].focus();
     }
@@ -75,8 +200,28 @@
         activate(nextIndex, true);
       });
     });
+
+    // Touch swipe for tabs on mobile
+    let touchStartX = 0;
+    const tabContainer = document.querySelector(‘.gate-tabs’);
+    if (tabContainer) {
+      tabContainer.addEventListener(‘touchstart’, (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+
+      tabContainer.addEventListener(‘touchend’, (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          const activeIndex = tabs.findIndex(t => t.classList.contains(‘is-active’));
+          if (diff > 0) activate((activeIndex + 1) % tabs.length);
+          else activate((activeIndex - 1 + tabs.length) % tabs.length);
+        }
+      }, { passive: true });
+    }
   }
 
+  // --- Privacy dialog ---
   function initializePrivacyDialog() {
     const email = document.getElementById("beta-email");
     const dialog = document.getElementById("privacyModal");
@@ -101,7 +246,7 @@
     }
 
     function focusableElements() {
-      return Array.from(dialog.querySelectorAll("a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])"))
+      return Array.from(dialog.querySelectorAll("a[href], button:not([disabled]), [tabindex]:not([tabindex=’-1’])"))
         .filter((element) => element.getAttribute("aria-hidden") !== "true");
     }
 
@@ -214,6 +359,7 @@
     return { isAccepted, openDialog };
   }
 
+  // --- Waitlist form ---
   function initializeWaitlist(privacyGate) {
     const form = document.getElementById("betaForm");
     const email = document.getElementById("beta-email");
@@ -224,15 +370,27 @@
     if (!form || !email || !submitButton || !errorMessage || !successMessage) return;
 
     const urlParams = new URLSearchParams(window.location.search);
-    let ref = urlParams.get('ref');
+    let ref = urlParams.get(‘ref’);
     if (ref) {
-        // Strip everything except alphanumeric, dashes, and underscores. Limit to 50 chars.
-        const cleanRef = ref.replace(/[^a-zA-Z0-9_-]/g, '').substring(0, 50);
-        const refField = document.getElementById('ref_field');
+        const cleanRef = ref.replace(/[^a-zA-Z0-9_-]/g, ‘’).substring(0, 50);
+        const refField = document.getElementById(‘ref_field’);
         if (refField) {
             refField.value = cleanRef;
         }
     }
+
+    // Email validation feedback
+    email.addEventListener(‘input’, () => {
+      if (email.validity.valid) {
+        email.style.borderColor = ‘’;
+      }
+    });
+
+    email.addEventListener(‘blur’, () => {
+      if (!email.validity.valid && email.value) {
+        email.style.borderColor = ‘#d95f45’;
+      }
+    });
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -246,7 +404,7 @@
       const originalButtonContent = submitButton.innerHTML;
       submitButton.disabled = true;
       submitButton.setAttribute("aria-busy", "true");
-      submitButton.textContent = "Joining…";
+      submitButton.innerHTML = ‘Joining… <span class="spin" aria-hidden="true">⟳</span>’;
 
       try {
         const response = await fetch(form.action, {
@@ -270,11 +428,16 @@
     });
   }
 
+  // --- Initialize everything ---
   document.addEventListener("DOMContentLoaded", () => {
     root.classList.add("page-ready");
     initializeReveals();
     initializeScrollProgress();
     initializeGateTabs();
+    initializeParallax();
+    initializeSmoothScroll();
+    initializeButtonRipple();
+    initializeKeyboardNav();
     const privacyGate = initializePrivacyDialog();
     initializeWaitlist(privacyGate);
   });
