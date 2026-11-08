@@ -1047,3 +1047,30 @@ body.dialog-open { overflow: hidden; }
         margin-top: 12px !important;
     }
 }
+/* --- MOBILE SQUISH FIX (EYEBROW & HEADER) --- */
+@media (max-width: 768px) {
+    /* 1. Fix the broken eyebrow text */
+    .hero-kicker {
+        font-size: 0.65rem !important;
+        padding: 6px 12px !important;
+        display: inline-flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 4px !important;
+        text-align: center !important;
+    }
+    
+    /* Hide the horizontal line on mobile to save space */
+    .hero-kicker__line {
+        display: none !important;
+    }
+
+    /* 2. Fix the top right header button */
+    .header-cta {
+        white-space: nowrap !important;
+        padding: 8px 14px !important;
+        font-size: 0.75rem !important;
+        border-radius: 999px !important;
+    }
+}
