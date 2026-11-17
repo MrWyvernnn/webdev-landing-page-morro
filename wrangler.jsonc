@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "morro-landing",
+  "compatibility_date": "2026-11-15",
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    // Only the API and the two token pages enter the Worker. Every other request
+    // is served straight from dist/, so public/_headers keeps applying to pages.
+    "run_worker_first": ["/api/*", "/confirm", "/unsubscribe"]
+  },
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "morro-waitlist",
+      // Replace after `npx wrangler d1 create morro-waitlist` prints the real id.
+      "database_id": "00000000-0000-4000-8000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

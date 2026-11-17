@@ -1,179 +1,32 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4efe4">
-  <meta name="description" content="Last night, you meant it. Morro is an Android alarm that plays back your own promise and helps you get out of bed—without a snooze button.">
-  <link rel="canonical" href="https://morrolandingpage.marhaanansari.workers.dev/">
-  <link rel="icon" type="image/svg+xml" href="/morro-mark.svg">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://morrolandingpage.marhaanansari.workers.dev/">
-  <meta property="og:title" content="Morro — Last night, you meant it.">
-  <meta property="og:description" content="A 15-second promise in your own voice. A morning alarm that won’t negotiate.">
-  <meta property="og:image" content="https://morrolandingpage.marhaanansari.workers.dev/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Morro — Last night, you meant it.">
-  <meta name="twitter:description" content="A 15-second promise in your own voice. A morning alarm that won’t negotiate.">
-  <meta name="twitter:image" content="https://morrolandingpage.marhaanansari.workers.dev/og-image.png">
-  <title>Morro — Let last night's promise wake you.</title>
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-  <div class="site-shell" id="top">
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="morro-mark" href="#top" aria-label="Morro, back to top">
-          <svg class="morro-mark__symbol" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="21" cy="21" r="19" stroke="currentColor" stroke-width="1.4"/><path d="M11 24a10 10 0 0 1 20 0" fill="currentColor"/><path d="M8 27h26M12 31h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M21 6v4M8.5 13l3 2M33.5 13l-3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span class="morro-mark__word">morro<span class="morro-mark__period">.</span></span>
-        </a>
-        <nav class="main-nav" aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="#gates">Friction gates</a>
-          <a href="#privacy">Privacy</a>
-        </nav>
-        <a class="header-cta" href="#waitlist">Get early access <svg viewBox="0 0 18 18" width="15" height="15" fill="none" aria-hidden="true"><path d="M4 14 14 4M5 4h9v9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </header>
-
-    <main id="main">
-      <section class="hero section-wrap" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <div class="hero-kicker-wrap"><span class="hero-kicker"><span class="hero-kicker__dot"></span> A DIFFERENT KIND OF ALARM <span class="hero-kicker__line"></span> ANDROID BETA</span></div>
-          <h1 id="hero-title">
-            <span class="hero-title-line"><span>Last night,</span></span>
-            <span class="hero-title-line hero-title-line--second"><span>you meant it.</span></span>
-            <span class="hero-title-line hero-title-line--accent"><span>Let Morro remember.</span></span>
-          </h1>
-          <div class="hero-deck-wrap" data-reveal>
-            <p class="hero-deck">A 15-second promise in your own voice. A morning alarm that won’t negotiate with the part of you still under the covers.</p>
-            <div class="hero-actions">
-              <a class="button button--ink" href="#waitlist">Join the Android beta <svg viewBox="0 0 18 18" width="17" height="17" fill="none" aria-hidden="true"><path d="M4 14 14 4M5 4h9v9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-              <a class="text-link" href="#how-it-works">See how it works <svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><path d="M8 2v11m-4-4 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            </div>
-          </div>
-          <div class="hero-footnote"><span class="hero-footnote__asterisk">✳</span><span>No snooze button.<br>No morning negotiations.</span></div>
-        </div>
-        <div class="hero-art-wrap">
-          <div class="clock-scene" aria-label="Illustration of Morro's alarm and voice commitment">
-            <div class="sun-disc" aria-hidden="true"><span class="sun-disc__ray sun-disc__ray--one"></span><span class="sun-disc__ray sun-disc__ray--two"></span><span class="sun-disc__ray sun-disc__ray--three"></span><span class="sun-disc__face">6<span>:</span>00</span><span class="sun-disc__label">A.M.</span></div>
-            <div class="phone-card" aria-hidden="true">
-              <div class="phone-card__camera"></div>
-              <div class="phone-card__topline"><span>MORRO / 01</span><span class="status-dot"></span><span>ALARM SET</span></div>
-              <div class="phone-card__time">06<span>:</span>00</div>
-              <div class="phone-card__date">MONDAY MORNING</div>
-              <div class="phone-card__rule"></div>
-              <div class="phone-card__promise-label"><span class="tiny-sun"></span> LAST NIGHT'S PROMISE</div>
-              <p class="phone-card__promise">“Shoes on.<br>Out the door.”</p>
-              <div class="waveform" aria-hidden="true"><span style="height:12px;--delay:0s"></span><span style="height:19px;--delay:.04s"></span><span style="height:10px;--delay:.08s"></span><span style="height:25px;--delay:.12s"></span><span style="height:16px;--delay:.16s"></span><span style="height:29px;--delay:.2s"></span><span style="height:12px;--delay:.24s"></span><span style="height:23px;--delay:.28s"></span><span style="height:17px;--delay:.32s"></span><span style="height:29px;--delay:.36s"></span><span style="height:13px;--delay:.4s"></span><span style="height:22px;--delay:.44s"></span><span style="height:10px;--delay:.48s"></span><span style="height:27px;--delay:.52s"></span><span style="height:16px;--delay:.56s"></span><span style="height:24px;--delay:.6s"></span><span style="height:11px;--delay:.64s"></span><span style="height:18px;--delay:.68s"></span><span style="height:29px;--delay:.72s"></span><span style="height:14px;--delay:.76s"></span><span style="height:22px;--delay:.8s"></span><span style="height:12px;--delay:.84s"></span></div>
-              <div class="phone-card__footer"><span>YOUR VOICE. YOUR REASON.</span><span>•••</span></div>
-            </div>
-            <div class="sticky-note" aria-hidden="true"><span class="sticky-note__scribble">no<br>snooze</span><span class="sticky-note__arrow">↘</span></div>
-            <div class="orbit orbit--one" aria-hidden="true"></div><div class="orbit orbit--two" aria-hidden="true"></div>
-            <span class="scene-index">FIG. 01 &nbsp; / &nbsp; THE FIRST TEN SECONDS</span>
-          </div>
-        </div>
-        <span class="hero-side-note" aria-hidden="true">A COMMITMENT DEVICE FOR THE FIRST TEN SECONDS</span>
-      </section>
-
-      <div class="ticker" aria-label="No snooze, no negotiation, just get up"><div class="ticker-track" aria-hidden="true"><span class="ticker-group"><span>NO SNOOZE</span><i>✳</i><span>NO NEGOTIATION</span><i>✳</i><span>JUST GET UP</span><i>✳</i><span>NO SNOOZE</span><i>✳</i><span>NO NEGOTIATION</span><i>✳</i></span><span class="ticker-group"><span>NO SNOOZE</span><i>✳</i><span>NO NEGOTIATION</span><i>✳</i><span>JUST GET UP</span><i>✳</i><span>NO SNOOZE</span><i>✳</i><span>NO NEGOTIATION</span><i>✳</i></span></div></div>
-
-      <section class="story section-wrap" id="how-it-works" aria-labelledby="story-title">
-        <div class="section-heading section-heading--split" data-reveal>
-          <div><span class="section-label"><span>01</span> / THE MORNING LOOP</span><h2 id="story-title">Your tired brain<br>is a <em>great negotiator.</em></h2></div>
-          <p class="section-intro">With the usual alarm, you dismiss it, roll over, and wake up forty-five minutes later bargaining with the day you meant to begin.</p>
-        </div>
-        <div class="promise-path">
-          <article class="promise-card promise-card--night" data-reveal>
-            <span class="promise-card__number">01</span><div class="promise-card__icon promise-card__icon--night"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Zm12-2a5 5 0 0 1 0 8m2-11a9 9 0 0 1 0 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <span class="promise-card__overline">THE NIGHT BEFORE · 15 SECONDS</span><h3>Leave a note<br>for morning-you.</h3><p>Record one short promise in your own voice. What matters tomorrow? Say it now, while you still mean it.</p>
-            <div class="quote-note"><span class="quote-note__mark">“</span><span>“Up. Water. Then the run.”</span><i>— you, last night</i></div>
-          </article>
-          <div class="path-connector" aria-hidden="true"><span class="path-connector__dash"></span><span class="path-connector__sun">✳</span><svg viewBox="0 0 20 20" width="18" height="18" fill="none"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <article class="promise-card promise-card--morning" data-reveal>
-            <span class="promise-card__number">02</span><div class="promise-card__icon promise-card__icon--morning"><span class="promise-sun">☼</span></div>
-            <span class="promise-card__overline">WHEN THE ALARM RINGS · NO SNOOZE</span><h3>Hear it from<br>someone you trust.</h3><p>Your own voice plays back in the morning. It keeps going until you listen—before you can talk yourself out of it.</p>
-            <div class="promise-wave" aria-hidden="true"><i style="--bar:11px;--delay:0s"></i><i style="--bar:24px;--delay:-.11s"></i><i style="--bar:18px;--delay:-.22s"></i><i style="--bar:29px;--delay:-.33s"></i><i style="--bar:15px;--delay:-.44s"></i><i style="--bar:25px;--delay:-.55s"></i><i style="--bar:19px;--delay:-.66s"></i><i style="--bar:11px;--delay:-.77s"></i><i style="--bar:27px;--delay:-.88s"></i><i style="--bar:18px;--delay:-.99s"></i><i style="--bar:29px;--delay:-.11s"></i><i style="--bar:13px;--delay:-.22s"></i><i style="--bar:24px;--delay:-.33s"></i><i style="--bar:16px;--delay:-.44s"></i><i style="--bar:27px;--delay:-.55s"></i><i style="--bar:10px;--delay:-.66s"></i><i style="--bar:21px;--delay:-.77s"></i><i style="--bar:14px;--delay:-.88s"></i><i style="--bar:26px;--delay:-.99s"></i><i style="--bar:12px;--delay:-.11s"></i><i style="--bar:22px;--delay:-.22s"></i><i style="--bar:15px;--delay:-.33s"></i><i style="--bar:27px;--delay:-.44s"></i><i style="--bar:14px;--delay:-.55s"></i><i style="--bar:19px;--delay:-.66s"></i><i style="--bar:28px;--delay:-.77s"></i><i style="--bar:12px;--delay:-.88s"></i><i style="--bar:21px;--delay:-.99s"></i><i style="--bar:16px;--delay:-.11s"></i><i style="--bar:25px;--delay:-.22s"></i></div>
-          </article>
-        </div>
-        <div class="story-aside" data-reveal><span class="story-aside__asterisk">✳</span><p>Handbuilt because we slept badly too. Morro is for people who mean it—and want a little friction between a promise and an excuse.</p></div>
-      </section>
-
-      <section class="gates-section section-wrap" id="gates" aria-labelledby="gates-title">
-        <div class="section-heading section-heading--gate" data-reveal><div><span class="section-label"><span>02</span> / FRICTION GATES</span><h2 id="gates-title">When a promise<br>needs <em>backup.</em></h2></div><p class="section-intro">A voice promise is the first nudge. Add a gate that asks your half-asleep self to actually do something.</p></div>
-        <div class="gate-demo" data-reveal>
-          <div class="gate-tabs" role="tablist" aria-label="Choose a Morro wake-up gate">
-            <button class="gate-tab is-active" type="button" role="tab" id="tab-qr" aria-selected="true" aria-controls="panel-qr" tabindex="0"><span class="gate-tab__index">01</span><svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM19 14v2m2 1v4h-4m-3 0h2" stroke="currentColor" stroke-width="1.5"/></svg><span>QR / BARCODE</span></button>
-            <button class="gate-tab" type="button" role="tab" id="tab-object" aria-selected="false" aria-controls="panel-object" tabindex="-1"><span class="gate-tab__index">02</span><svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg><span>PHOTO HUNT</span></button>
-            <button class="gate-tab" type="button" role="tab" id="tab-math" aria-selected="false" aria-controls="panel-math" tabindex="-1"><span class="gate-tab__index">03</span><svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="M5 4h14v16H5zM8 8h8M8 12h2m4 0h2m-8 4h2m4 0h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>RAPID MATH</span></button>
-            <button class="gate-tab" type="button" role="tab" id="tab-affirmation" aria-selected="false" aria-controls="panel-affirmation" tabindex="-1"><span class="gate-tab__index">04</span><svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Zm7 11 .9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span>AFFIRMATION</span></button>
-          </div>
-          <section class="gate-panel" id="panel-qr" role="tabpanel" aria-labelledby="tab-qr">
-            <div class="gate-panel__copy"><span class="eyebrow"><span class="eyebrow__dot"></span>A short walk, on purpose</span><h3>Put the off switch somewhere else.</h3><p>Scan a QR code by the bathroom sink or the barcode on your coffee. Your feet have to hit the floor first.</p><span class="gate-panel__note">TARGET: BATHROOM SINK</span></div>
-            <div class="gate-panel__art"><div class="gate-visual gate-visual--qr" aria-hidden="true"><div class="qr-paper"><div class="qr-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><span class="qr-caption">MORRO / SCAN TO WAKE</span></div><div class="scan-beam"></div><svg class="gate-visual__icon" viewBox="0 0 24 24" width="25" height="25" fill="none"><path d="M4 8V4h4m8 0h4v4m0 8v4h-4M8 20H4v-4M4 12h16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div></div>
-          </section>
-          <section class="gate-panel" id="panel-object" role="tabpanel" aria-labelledby="tab-object" hidden>
-            <div class="gate-panel__copy"><span class="eyebrow"><span class="eyebrow__dot"></span>Find the thing you need</span><h3>Go get the keys you left by the door.</h3><p>Choose an everyday object. In the morning, a photo of the real thing is your proof of arrival.</p><span class="gate-panel__note">MISSION: FIND YOUR KEYS</span></div>
-            <div class="gate-panel__art"><div class="gate-visual gate-visual--object" aria-hidden="true"><div class="photo-frame"><div class="keyring"><span></span><span></span><i></i><i></i></div><span class="photo-frame__label">on the little table</span><svg class="photo-frame__camera" viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg></div><span class="focus-corner focus-corner--tl"></span><span class="focus-corner focus-corner--br"></span></div></div>
-          </section>
-          <section class="gate-panel" id="panel-math" role="tabpanel" aria-labelledby="tab-math" hidden>
-            <div class="gate-panel__copy"><span class="eyebrow"><span class="eyebrow__dot"></span>Wake up your working memory</span><h3>One little problem. No sleepy autopilot.</h3><p>Solve a quick equation before the alarm can be dismissed. Small cognitive friction; a much more awake brain.</p><span class="gate-panel__note">QUICK CHECK: 48 − 19</span></div>
-            <div class="gate-panel__art"><div class="gate-visual gate-visual--math" aria-hidden="true"><div class="math-card"><span class="math-card__overline">BEFORE THE DAY BEGINS</span><strong>48 <i>−</i> 19 <i>=</i> <b>?</b></strong><div class="math-dots"><i></i><i></i><i></i><i></i><i></i></div></div><div class="math-spark">✳</div></div></div>
-          </section>
-          <section class="gate-panel" id="panel-affirmation" role="tabpanel" aria-labelledby="tab-affirmation" hidden>
-            <div class="gate-panel__copy"><span class="eyebrow"><span class="eyebrow__dot"></span>Say it, then do it</span><h3>Put your own words in the room.</h3><p>Repeat a positive affirmation out loud. A tiny cue to turn the first thought of the day into a deliberate one.</p><span class="gate-panel__note">YOUR CUE: SAY IT OUT LOUD</span></div>
-            <div class="gate-panel__art"><div class="gate-visual gate-visual--affirmation" aria-hidden="true"><div class="affirmation-card"><span>say it once, out loud</span><strong>“Feet on the floor.<br>One thing at a time.”</strong><i>— a note from you to you</i></div><div class="affirmation-check">✓</div></div></div>
-          </section>
-        </div>
-        <div class="gate-footnote" data-reveal><span class="gate-footnote__line"></span><span>THE POINT ISN’T TO MAKE MORNINGS HARDER.<br><b>IT’S TO MAKE GOING BACK TO SLEEP HARDER.</b></span><span class="gate-footnote__sun">☼</span></div>
-      </section>
-
-      <section class="value-band" aria-label="Morro pricing advantage"><div class="value-band__inner" data-reveal><div class="value-band__stamp"><span>BUILT FOR<br>REAL LIFE</span><i>✳</i></div><div class="value-band__copy"><span class="section-label section-label--light">A LITTLE LESS FRICTION. A LOT LESS SPEND.</span><h2>More ways to get up.<br><em>One-third the cost.</em></h2></div><div class="value-band__detail"><p>Morro delivers commitment-gate functionality at one-third the cost of legacy alarm apps.</p><span><svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><path d="m3 8 3.2 3.2L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> No extra hardware</span><span><svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true"><path d="m3 8 3.2 3.2L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> No subscription for physical gates</span></div></div></section>
-
-      <section class="privacy section-wrap" id="privacy" aria-labelledby="privacy-title">
-        <div class="privacy-heading" data-reveal><span class="section-label"><span>03</span> / YOUR DATA, YOUR PHONE</span><div class="privacy-heading__row"><h2 id="privacy-title">Private by<br><em>where it lives.</em></h2><span class="privacy-seal"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><b>LOCAL<br>BY DESIGN</b></span></div></div>
-        <div class="privacy-layout"><div class="privacy-copy" data-reveal><p class="privacy-copy__lead">Your mornings are personal. Your data should be, too.</p><p>Voice memos, alarm routines and mission data stay in Morro’s local storage on your phone. No cloud sync. No trackers. No ad profiling.</p><a class="text-link text-link--dark" href="privacy.html">Read the Privacy Policy <svg viewBox="0 0 18 18" width="15" height="15" fill="none" aria-hidden="true"><path d="M4 14 14 4M5 4h9v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
-          <div class="privacy-points"><article class="privacy-point" data-reveal><span class="privacy-point__icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg></span><div><h3>Kept on your phone</h3><p>Voice memos, alarms and mission data stay local.</p></div><span class="privacy-point__index">01</span></article><article class="privacy-point" data-reveal><span class="privacy-point__icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.3 8.5-8 10-4.7-1.5-8-5-8-10V6l8-3Z" stroke="currentColor" stroke-width="1.5"/><path d="m8.5 12 2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><div><h3>No cloud sync</h3><p>Your routines aren’t sent to a remote server.</p></div><span class="privacy-point__index">02</span></article><article class="privacy-point" data-reveal><span class="privacy-point__icon"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="M4 7h16M7 4v16m10-16v16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><div><h3>No ad profiling</h3><p>No trackers. No advertising profile built around you.</p></div><span class="privacy-point__index">03</span></article></div>
-        </div>
-      </section>
-
-      <section class="waitlist section-wrap" id="waitlist" aria-labelledby="waitlist-title" tabindex="-1">
-        <div class="waitlist-card"><div class="waitlist-card__decor" aria-hidden="true"><span class="waitlist-sun"></span><span class="waitlist-rays"></span><span class="waitlist-orbit"></span></div>
-          <div class="waitlist-copy" data-reveal><span class="section-label section-label--light"><span>04</span> / CLOSED ANDROID BETA</span><h2 id="waitlist-title">Tomorrow-you<br>is already <em>waiting.</em></h2><p>Get first word when Morro’s closed Android beta opens. Free to join; built for Android 8.0 and up.</p><div class="waitlist-tags"><span><i></i> CLOSED BETA</span><span><i></i> ANDROID 8.0+</span></div></div>
-          <div class="waitlist-form-wrap" data-reveal>
-            <form class="waitlist-form" id="betaForm" action="https://api.web3forms.com/submit" method="POST">
-              <input type="hidden" name="access_key" value="a0839c6c-2f6d-4b48-8c55-7f00ee4dba11">
-              <input type="hidden" name="subject" value="Morro Android beta waitlist">
-              <input type="hidden" name="ref" id="refField" value="">
-              <div class="waitlist-form__honeypot" aria-hidden="true"><label>Leave this field empty<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
-              <label class="waitlist-form__label" for="beta-email">Your email address</label>
-              <div class="waitlist-form__email-wrap"><input class="waitlist-form__email" id="beta-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="privacy-inline-note" required><button class="waitlist-form__submit" id="submitBtn" type="submit">Join the waitlist <svg viewBox="0 0 18 18" width="17" height="17" fill="none" aria-hidden="true"><path d="M4 14 14 4M5 4h9v9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-              <label class="waitlist-form__eligibility"><input type="checkbox" name="android_confirmed" value="Yes — Android 8.0 or newer" required><span class="custom-check"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true"><path d="m3 8 3 3 7-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>I confirm I’m on Android 8.0 or newer.</span></label>
-              <p class="waitlist-form__fineprint" id="privacy-inline-note">Your email is used for beta access and launch updates. Your app voice commitments and alarm data stay on your phone.</p>
-              <p class="waitlist-form__error" id="formError" role="alert" hidden></p>
-            </form>
-            <div class="waitlist-success" id="formSuccess" role="status" aria-live="polite" tabindex="-1" hidden><span class="waitlist-success__icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>You’re on the list.</strong><p>Keep an eye on your inbox. We’ll be in touch when your beta spot opens.</p></div></div>
-            <p class="waitlist-access-note">Beta access is free. The full release requires an active subscription and account login.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer"><div class="footer-main section-wrap"><div class="footer-brand"><a class="morro-mark" href="#top" aria-label="Morro, back to top"><svg class="morro-mark__symbol" viewBox="0 0 42 42" fill="none" aria-hidden="true"><circle cx="21" cy="21" r="19" stroke="currentColor" stroke-width="1.4"/><path d="M11 24a10 10 0 0 1 20 0" fill="currentColor"/><path d="M8 27h26M12 31h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M21 6v4M8.5 13l3 2M33.5 13l-3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="morro-mark__word">morro<span class="morro-mark__period">.</span></span></a><p>Put a little distance<br>between you and snooze.</p></div><div class="footer-bottom"><span class="footer-disclaimer">Morro is provided AS-IS. © 2026 MORRO.</span><div class="footer-links"><a href="privacy.html">Privacy Policy</a><span>·</span><a href="terms.html">Terms of Service</a></div><a class="back-to-top" href="#top">Back to the top <svg viewBox="0 0 18 18" width="14" height="14" fill="none" aria-hidden="true"><path d="M4 14 14 4M5 4h9v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></footer>
-  </div>
-
-  <div class="privacy-modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" aria-describedby="privacyModalDesc" aria-hidden="true" tabindex="-1">
-    <div class="privacy-modal-card">
-      <span class="section-label"><span>BEFORE YOU JOIN</span> / YOUR PRIVACY</span>
-      <div class="privacy-promise-card">Your app data stays on your phone. Your waitlist email is handled separately.</div>
-      <h2 id="privacyModalTitle" class="privacy-modal-title">A clear note before we ask for your email.</h2>
-      <p id="privacyModalDesc" class="privacy-modal-desc">Morro keeps voice recordings, alarm routines and mission data in local storage on your Android device. If you join the beta list, your email is sent through Web3Forms over TLS for beta invites and launch updates. You can request deletion at marhaanansari@gmail.com.</p>
-      <a href="privacy.html" target="_blank" rel="noopener noreferrer" class="privacy-modal-link" id="privacyModalLink">Read the full Privacy Policy <span aria-hidden="true">↗</span></a>
-      <div class="privacy-modal-actions"><button type="button" class="privacy-accept-btn" id="privacyAcceptBtn"><span aria-hidden="true">✓</span> Continue to email</button><button type="button" class="privacy-decline-btn" id="privacyDeclineBtn">Not now</button></div>
-    </div>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Morro — You made a promise. Wake up and keep it.</title>
+    <meta
+      name="description"
+      content="Record fifteen seconds in your own voice tonight. In the morning Morro plays it back and waits until you're actually up. A commitment alarm for Android."
+    />
+    <link rel="canonical" href="https://morrolandingpage.marhaanansari.workers.dev/" />
+    <link rel="icon" type="image/svg+xml" href="/morro-mark.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://morrolandingpage.marhaanansari.workers.dev/" />
+    <meta property="og:title" content="Morro — You made a promise. Wake up and keep it." />
+    <meta
+      property="og:description"
+      content="A fifteen-second promise in your own voice. A morning alarm that won't negotiate."
+    />
+    <style>
+      html {
+        background: #000000;
+        color-scheme: dark;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

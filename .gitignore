@@ -2,3 +2,11 @@
 Thumbs.db
 .vscode/
 .idea/
+node_modules/
+dist/
+*.local
+
+# local wrangler state (local D1, caches)
+.wrangler/
+
+.dev.vars
