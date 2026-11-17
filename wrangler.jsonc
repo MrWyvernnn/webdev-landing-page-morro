@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "morro-landing",
+  "name": "morrolandingpage",
   "compatibility_date": "2026-11-15",
   "main": "worker/index.ts",
   "assets": {
