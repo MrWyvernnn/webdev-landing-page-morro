@@ -95,7 +95,7 @@ export function Hero() {
           </motion.div>
 
           <motion.p className="hero__fine" {...fade(0.42)}>
-            No snooze. Free during beta. Everything stays on your phone.
+            No snooze. Everything stays on your phone.
           </motion.p>
         </div>
 

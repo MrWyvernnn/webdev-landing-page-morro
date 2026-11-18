@@ -19,7 +19,7 @@ const ROWS: Row[] = [
   {
     title: "Works offline",
     body: "The app core never contacts a server. Your routines aren’t uploaded.",
-    note: "A server connection will be required for subscription and account login.",
+    note: "Purchases are handled by Google Play.",
     Icon: OfflineIcon,
   },
   {

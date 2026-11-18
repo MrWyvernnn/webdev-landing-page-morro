@@ -167,7 +167,8 @@ export function Signup() {
             Tomorrow-you is already waiting.
           </h2>
           <p className="t-body" style={{ marginTop: 16, color: "var(--text-secondary)" }}>
-            Get first word when the closed Android beta opens. Free to join. Android 8.0 and up.
+            Get first word when the closed Android beta opens. Free to join the list. Android 8.0
+            and up.
           </p>
         </motion.div>
 
@@ -301,7 +302,7 @@ export function Signup() {
         </div>
 
         <p className="t-label" style={{ marginTop: 16, textAlign: "center", color: "var(--text-tertiary)" }}>
-          Free during the beta. No account needed.
+          Beta access is invite-only. Pricing announced before launch.
         </p>
       </div>
 
